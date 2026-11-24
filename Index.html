@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Duo">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<meta name="theme-color" content="#F7F5FB">
+<title>Duo · Comptes-rendus de visite</title>
+<style>
+:root{--navy:#2A2B57;--navy2:#4B4C8C;--ink:#1F2142;--mut:#6E7191;--line:#ECE8F4;--bg:#F7F5FB;--card:#fff;--amber:#A97B10;--amberL:#FFF3CF;--green:#2F8F6B;--greenL:#DDF4EA;--coral:#CF6A55;--coralL:#FFE9E0;--blue:#3F72B5;--blueL:#E2EFFC;--grey:#D5D6E2;--lav:#ECE7FF;--lavD:#6C5DD3;--rose:#FCE6EE;--roseD:#C0517A;--grad:linear-gradient(135deg,#8E7CF0 0%,#E99AC0 55%,#F6B08F 100%);--r:22px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:radial-gradient(900px 500px at 0% -10%,#EFEAFF 0,transparent 60%),radial-gradient(700px 500px at 110% 0%,#FFEDE5 0,transparent 55%),var(--bg);background-attachment:fixed;color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,Roboto,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+a{color:inherit}
+.wrap{max-width:900px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;gap:12px;margin:4px 0 18px}
+.logo{width:40px;height:40px;border-radius:13px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900;font-size:19px;letter-spacing:-.5px;flex:none;box-shadow:0 8px 20px -10px rgba(108,93,211,.7)}
+.logo span{display:none}
+.top h1{font-size:20px;margin:0;letter-spacing:-.3px}
+.top p{margin:0;color:var(--mut);font-size:13px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--navy2);font-weight:600;font-size:15px;padding:6px 0;margin-bottom:6px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:26px 2px 10px;font-weight:700}
+.card{background:var(--card);border-radius:var(--r);padding:16px;box-shadow:0 1px 0 rgba(42,43,87,.03),0 14px 34px -22px rgba(42,43,87,.35);border:1px solid rgba(42,43,87,.05)}
+.hero{background:radial-gradient(at 0% 0%,#DCD3FF 0,transparent 55%),radial-gradient(at 100% 0%,#FFD9C9 0,transparent 50%),radial-gradient(at 100% 100%,#CFE6FB 0,transparent 55%),radial-gradient(at 0% 100%,#D6F2E6 0,transparent 50%),#F1EDFF;color:var(--ink);border-radius:26px;padding:22px 18px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.8);box-shadow:0 20px 40px -28px rgba(108,93,211,.6)}
+.hero h1{margin:0 0 4px;font-size:24px;letter-spacing:-.4px}
+.hero p{margin:0;color:#4D4F75;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.stat{background:rgba(255,255,255,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.9);border-radius:16px;padding:10px 12px}
+.stat b{display:block;font-size:22px;letter-spacing:-.5px}
+.stat span{font-size:12px;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.mcard{display:flex;flex-direction:column;gap:10px;text-align:left;width:100%}
+.mrow{display:flex;align-items:center;gap:12px}
+.av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;flex:none;font-size:16px;letter-spacing:.5px}
+.av.lg{width:62px;height:62px;font-size:21px}
+.mname{font-weight:700;font-size:16.5px;letter-spacing:-.2px}
+.msub{font-size:13px;color:var(--mut)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--blueL);color:var(--blue);white-space:nowrap}
+.pill.dms{background:var(--lav);color:var(--lavD)}
+.pill.dmv{background:#DDF1F4;color:#2B7E8A}
+.pill.am{background:var(--amberL);color:var(--amber)}
+.pill.gr{background:var(--greenL);color:var(--green)}
+.pill.co{background:var(--coralL);color:var(--coral)}
+.pill.mu{background:#EFEDE8;color:var(--mut)}
+.obj{font-size:13.5px;background:var(--lav);color:#3F3687;border-radius:14px;padding:9px 11px;line-height:1.35}
+.obj b{color:var(--lavD)}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--grey)}
+.l1{background:#F08A7E}.l2{background:#F4BE57}.l3{background:#45B58C}.l0{background:#DCDDE8}
+.mfoot{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:16px;padding:12px 16px;font-weight:700;font-size:15px;background:var(--navy);color:#fff;transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn.sec{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.ghost{background:transparent;color:var(--navy2);padding:8px 10px}
+.btn.sm{padding:8px 12px;font-size:13.5px;border-radius:11px}
+.btn.amb{background:var(--grad);box-shadow:0 12px 26px -14px rgba(192,81,122,.8)}
+.btn.full{width:100%}
+.btn.danger{background:#fff;color:var(--coral);border:1px solid #F0CFC8}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.lbl{font-size:12.5px;font-weight:700;color:var(--mut);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.05em}
+input[type=text],input[type=date],input[type=number],textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;outline:none;font-size:16px}
+input:focus,textarea:focus,select:focus{border-color:var(--navy2);box-shadow:0 0 0 3px rgba(38,57,95,.12)}
+textarea{resize:vertical;min-height:90px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--mut)}
+.chip.on{background:var(--lavD);border-color:var(--lavD);color:#fff}
+.mic-zone{display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0 4px}
+.mic{width:92px;height:92px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;position:relative;box-shadow:0 10px 28px -10px rgba(20,35,63,.6)}
+.mic svg{width:34px;height:34px}
+.mic.rec{background:var(--roseD)}
+.mic.rec:before,.mic.rec:after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #E99AC0;animation:pulse 1.6s infinite}
+.mic.rec:after{animation-delay:.8s}
+@keyframes pulse{from{transform:scale(1);opacity:.7}to{transform:scale(1.6);opacity:0}}
+.mic-hint{font-size:13.5px;color:var(--mut);text-align:center;max-width:460px}
+.dict{min-height:200px;font-size:16.5px}
+.seg{display:flex;background:#ECE8F6;border-radius:12px;padding:3px;gap:2px;overflow-x:auto}
+.seg button{flex:1;padding:8px 10px;border-radius:10px;font-weight:700;font-size:13.5px;color:var(--mut);white-space:nowrap}
+.seg button.on{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom));z-index:20}
+.nav a{flex:1;max-width:180px;display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;font-size:11.5px;font-weight:600;color:var(--mut);padding:4px}
+.nav a.on{color:var(--lavD)}
+.nav svg{width:24px;height:24px}
+/* report */
+.rhead{display:flex;gap:14px;align-items:flex-start}
+.headline{font-size:21px;font-weight:800;letter-spacing:-.4px;line-height:1.25;margin:10px 0 4px}
+.meta{font-size:13.5px;color:var(--mut)}
+.sec{border-radius:var(--r);padding:14px 16px;margin-top:12px}
+.sec h3{margin:0 0 8px;font-size:15px;display:flex;align-items:center;gap:8px;letter-spacing:-.1px}
+.sec.g{background:var(--greenL)}.sec.g h3{color:var(--green)}
+.sec.c{background:#fff;border:1px solid #F6DCE6}.sec.c h3{color:var(--roseD)}
+.sec.a{background:var(--lav)}.sec.a h3{color:var(--lavD)}
+.sec.b{background:var(--blueL)}.sec.b h3{color:var(--blue)}
+.sec.w{background:#fff;border:1px solid var(--line)}
+.sec.y{background:var(--amberL)}.sec.y h3{color:var(--amber)}
+.sec.p{background:linear-gradient(160deg,#2A2B57,#3F3A7A);color:#ECEBFA}.sec.p h3{color:#F9C9B4}
+.it{display:flex;gap:8px;align-items:flex-start;padding:6px 0}
+.it+.it{border-top:1px dashed rgba(0,0,0,.08)}
+.it .tx{flex:1}
+.tag{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;opacity:.75}
+.keep{font-size:12.5px;color:#4E6E5E;margin-top:2px}
+.x{color:#A9AEB8;font-size:18px;line-height:1;padding:2px 4px}
+.axis{background:var(--rose);border-radius:16px;padding:12px;margin-top:8px}
+.axis .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--roseD);color:#fff;font-size:12px;font-weight:800;margin-right:6px}
+.axis .t{font-weight:800;font-size:15px}
+.axis .o{font-size:14px;color:#7A3553;margin:6px 0;font-style:italic}
+.axis .adv{font-size:14.5px;background:#fff;border-radius:10px;padding:9px 11px;margin-top:6px;line-height:1.45}
+.axis .adv b{color:var(--navy)}
+.axis .alt{font-size:13px;color:var(--mut);margin-top:6px}
+[contenteditable]{outline:none;border-radius:6px;transition:background .15s}
+[contenteditable]:focus{background:rgba(255,255,255,.8);box-shadow:0 0 0 2px rgba(38,57,95,.2)}
+.sec.p [contenteditable]:focus{background:rgba(255,255,255,.08)}
+.ob{padding:8px 0}
+.ob+.ob{border-top:1px dashed rgba(0,0,0,.1)}
+.ob .q{font-weight:700;font-size:14px}
+.ob .r{font-size:14px;margin-top:3px;white-space:pre-wrap}
+.ob .pr{font-size:12px;color:var(--mut);margin-top:3px}
+.gridc{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px}
+.gc{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px 10px;font-size:13.5px;text-align:left}
+.gc .dot{width:12px;height:12px;flex:none}
+.gc small{display:block;color:var(--mut);font-size:11.5px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:16px}
+.tl{position:relative;padding-left:18px}
+.tl:before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tli{position:relative;margin-bottom:10px;width:100%;text-align:left;display:block}
+.tli:before{content:"";position:absolute;left:-17px;top:20px;width:10px;height:10px;border-radius:50%;background:var(--lavD);border:2px solid var(--bg)}
+.matrix{overflow-x:auto}
+.matrix table{border-collapse:collapse;width:100%;font-size:13px}
+.matrix td,.matrix th{padding:5px 6px;text-align:center}
+.matrix th{font-size:11.5px;color:var(--mut);font-weight:700}
+.matrix td:first-child,.matrix th:first-child{text-align:left;white-space:nowrap}
+.matrix .dot{display:inline-block;width:13px;height:13px}
+.fld{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.fld{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}}
+.info{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px;margin-top:12px}
+.info dt{color:var(--mut)}
+.info dd{margin:0}
+.lib details{background:#fff;border-radius:14px;padding:12px 14px;margin-top:8px;border:1px solid var(--line)}
+.lib summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:8px}
+.lib summary::-webkit-details-marker{display:none}
+.lib summary:after{content:"+";color:var(--mut);font-weight:400;font-size:20px;line-height:1}
+.lib details[open] summary:after{content:"-"}
+.lib p,.lib li{font-size:14.5px}
+.lib ul{padding-left:18px;margin:8px 0}
+.step{display:flex;gap:12px;padding:10px 0}
+.step+.step{border-top:1px solid var(--line)}
+.step .n{width:28px;height:28px;border-radius:50%;background:var(--lavD);color:#fff;display:grid;place-items:center;font-weight:800;flex:none;font-size:14px}
+.step b{display:block}
+.step span{font-size:14px;color:#3E4557}
+.toast{pointer-events:none;position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;opacity:0;transition:.25s;z-index:50;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.muted{color:var(--mut);font-size:13.5px}
+.empty{text-align:center;padding:26px 10px;color:var(--mut)}
+.prev{border:1px dashed var(--lavD);background:var(--lav);border-radius:14px;padding:12px}
+.small{font-size:13px}
+.kpi{display:grid;grid-template-columns:1.3fr 1fr auto;gap:8px;margin-top:6px}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin-top:30px}
+.plist{display:grid;gap:8px}
+.prod h4{margin:0 0 4px;font-size:16px}
+.prod .cls{font-size:12.5px;color:var(--mut)}
+.prod .m{font-size:14.5px;margin:8px 0}
+.foot.tiny{font-size:10px;opacity:.55;margin-top:40px}
+/* dictée plein écran */
+.ov{position:fixed;inset:0;z-index:60;background:radial-gradient(90% 60% at 20% 0%,#5A4FB0 0%,transparent 60%),radial-gradient(80% 50% at 100% 100%,#8C4F7E 0%,transparent 60%),#1E1F45;color:#fff;display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom))}
+.ov[hidden]{display:none}
+.ov-top{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;opacity:.85}
+.ov-state{display:inline-flex;align-items:center;gap:8px}
+.ov-state:before{content:"";width:9px;height:9px;border-radius:50%;background:#FF6B57;box-shadow:0 0 0 4px rgba(255,107,87,.25);animation:blink 1.2s infinite}
+.ov.paused .ov-state:before{background:#F6B08F;animation:none}
+@keyframes blink{50%{opacity:.35}}
+.ov-name{font-size:13px;opacity:.6;margin-top:10px}
+.ov-text{flex:1;overflow-y:auto;font-size:23px;line-height:1.45;font-weight:500;letter-spacing:-.2px;margin:12px 0;white-space:pre-wrap;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 12px);padding-top:6px}
+.ov-text .int{opacity:.45}
+.ov-text .ph{opacity:.4;font-size:19px}
+.bars{display:flex;justify-content:center;align-items:center;gap:6px;height:64px}
+.bars i{width:6px;height:10px;border-radius:4px;background:linear-gradient(#C9BEFF,#F6B08F);transition:height .15s}
+.ov.speaking .bars i{animation:bar .9s ease-in-out infinite}
+.bars i:nth-child(2){animation-delay:.1s!important}.bars i:nth-child(3){animation-delay:.25s!important}.bars i:nth-child(4){animation-delay:.05s!important}.bars i:nth-child(5){animation-delay:.3s!important}.bars i:nth-child(6){animation-delay:.15s!important}.bars i:nth-child(7){animation-delay:.35s!important}.bars i:nth-child(8){animation-delay:.2s!important}.bars i:nth-child(9){animation-delay:.4s!important}
+@keyframes bar{0%,100%{height:10px}50%{height:54px}}
+.ov.paused .bars i{animation:none;height:6px;opacity:.4}
+.ov-help{font-size:12.5px;opacity:.6;text-align:center;margin:8px auto 14px;max-width:520px;line-height:1.5}
+.ov-btns{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+.ov-btns button{border-radius:18px;padding:18px;font-weight:800;font-size:17px;background:rgba(255,255,255,.1);color:#fff}
+.ov-btns .go{background:var(--grad);color:#fff}
+.cmd{display:inline-block;background:rgba(255,255,255,.12);border-radius:6px;padding:1px 6px;margin:2px 1px;font-weight:600}
+/* méthodes visuelles */
+.tbar{display:flex;height:10px;border-radius:6px;overflow:hidden;gap:2px;margin:8px 0 4px}
+.tbar i{flex:1}
+.tleg{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mut)}
+.dstep{display:flex;gap:12px;background:#fff;border-radius:16px;padding:14px;margin-top:10px;border:1px solid var(--line)}
+.dstep .n{width:34px;height:34px;border-radius:11px;color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
+.dstep .tt{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:800}
+.dstep .tt span{font-size:11.5px;font-weight:700;color:var(--mut);background:var(--bg);padding:2px 8px;border-radius:999px}
+.dstep p{margin:4px 0 0;font-size:14px;color:#3E4557}
+.quote{background:var(--bg);border-radius:14px 14px 14px 4px;padding:8px 12px;font-size:14px;font-style:italic;margin-top:8px;color:var(--navy)}
+.vcard{background:#fff;border-radius:16px;padding:14px;margin-top:10px;border:1px solid var(--line)}
+.vcard h4{margin:0 0 10px;font-size:15.5px}
+.vcard .sub{font-size:13px;color:var(--mut);margin:-6px 0 10px}
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tri>div{border-radius:14px;padding:11px;font-size:13px;line-height:1.35}
+.tri b{display:block;font-size:24px;line-height:1;margin-bottom:6px}
+.tri .k{font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.cb{background:var(--blueL);color:#2C568C}.ca{background:var(--amberL);color:#7A5A0C}.cg{background:var(--greenL);color:#226B50}.cc{background:var(--rose);color:#8E3A5B}.cv{background:var(--lav);color:#4A3FA0}.ct{background:#DDF1F4;color:#226670}
+.tri.stack{grid-template-columns:1fr}.tri.stack>div{display:grid;grid-template-columns:34px 1fr;column-gap:10px;align-items:start}.tri.stack b{grid-row:span 2;margin:0}
+.m2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m2>div{border-radius:14px;padding:12px;font-size:13.5px;line-height:1.4}
+.m2 .k{font-weight:800;font-size:14px;margin-bottom:4px}
+.flow{display:flex;gap:4px;overflow-x:auto;padding:2px 0 6px;align-items:center}
+.flow span{flex:none;padding:8px 11px;border-radius:12px;background:var(--bg);font-weight:700;font-size:13px;color:var(--mut)}
+.flow span.hot{background:var(--lavD);color:#fff}
+.flow em{color:#B9BDC6;font-style:normal;flex:none}
+.funnel>div{margin:6px auto;border-radius:12px;padding:9px 12px;color:#fff;font-size:13.5px}
+.funnel b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.05em;opacity:.8}
+.cycle{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.cycle>div{text-align:center;border-radius:14px;padding:10px 6px;font-size:12.5px;line-height:1.3}
+.cycle b{display:block;font-size:20px;margin-bottom:2px}
+.figs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.fig{display:inline-flex;flex-direction:column;background:linear-gradient(135deg,#2A2B57,#5A4FB0);color:#fff;border-radius:12px;padding:8px 12px;min-width:90px}
+.fig b{font-size:17px;letter-spacing:-.3px;white-space:nowrap}
+.fig span{font-size:11.5px;opacity:.75}
+.objc{border-left:4px solid var(--coral);background:#fff;border-radius:12px;padding:10px 12px;margin-top:8px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.objc .q{font-weight:800;font-size:14.5px}
+.objc .r{font-size:14px;margin-top:4px}
+.objc .src{display:inline-block;margin-top:6px;font-size:11.5px;font-weight:700;color:var(--blue);background:var(--blueL);padding:2px 8px;border-radius:999px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cgrid>div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;font-size:13.5px;line-height:1.4;border-top:4px solid var(--navy2)}
+.cgrid b{display:block;margin-bottom:4px;font-size:14px}
+@media(max-width:400px){.tri b{font-size:20px}.cycle{grid-template-columns:repeat(2,1fr)}}
+.demo-b{background:linear-gradient(135deg,#2A2B57,#5A4FB0);color:#fff;border-radius:14px;padding:10px 14px;font-size:13.5px;margin-bottom:10px}
+.prof{display:flex;gap:6px;flex-wrap:wrap}
+.ck{width:26px;height:26px;border-radius:8px;border:2px solid #C3C7D0;background:#fff;display:grid;place-items:center;flex:none;color:transparent;transition:.15s}
+.ck.on{background:var(--lavD);border-color:var(--lavD);color:#fff}
+.ck.sm{width:21px;height:21px;border-radius:6px}
+.ck.sm svg{width:11px;height:11px}
+.si{display:flex;gap:10px;align-items:flex-start;padding:8px 0;transition:opacity .15s}
+.si+.si{border-top:1px dashed rgba(0,0,0,.08)}
+.si .tx{flex:1;min-width:0}
+.sr{display:flex;gap:8px;align-items:flex-start;margin-top:8px;transition:opacity .15s}
+.sr>div{flex:1;min-width:0}
+.subs{margin-left:36px}
+.axis .subs .sr{background:#fff;border-radius:10px;padding:8px 10px;font-size:14px}
+.axis .subs .o{font-style:italic;color:#6D3B31}
+.off{opacity:.4}
+.si.off .ck,.sr.off .ck,.axis.off>.si .ck{opacity:1}
+.cnt{margin-left:auto;font-size:12px;font-weight:800;background:rgba(255,255,255,.7);padding:2px 8px;border-radius:999px;color:var(--mut)}
+.sec h3 .cnt{margin-left:auto}
+.selbar{position:sticky;bottom:calc(72px + env(safe-area-inset-bottom));margin-top:16px;z-index:5}
+.selbar .btn{padding:16px}
+.stepper{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;color:var(--mut);margin:0 2px 10px}
+.stepper i{flex:1;height:2px;background:var(--line)}
+.stepper .on{color:var(--navy)}
+.stbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.stb{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:var(--lav);color:var(--lavD);font-size:12.5px;font-weight:700;text-decoration:none;border:1px solid #DCD3FF;white-space:nowrap}
+.stb:active{transform:scale(.97)}
+.refl{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0}
+.refl+.refl{border-top:1px solid var(--line)}
+.rl{margin:6px 0 0;padding-left:18px;font-size:14px}.rl li{margin:4px 0}
+.objc.bare{border-left:0;border:0;padding:4px 0 0;margin:0}
+.objd{margin-top:8px}
+.si .r{white-space:pre-wrap;font-size:14px}
+.cvcard{padding:16px}
+.cvstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.cvstats>div{border-radius:14px;padding:10px;text-align:center}
+.cvstats b{display:block;font-size:17px;letter-spacing:-.3px;line-height:1.2}
+.cvstats span{font-size:11.5px;opacity:.8}
+.cvt{position:relative}
+.cvi{display:flex;gap:12px;padding:10px 0;position:relative}
+.cvi+.cvi{border-top:1px solid var(--line)}
+.cvi.sv{background:var(--lav);border-radius:14px;padding:10px;margin:2px -6px;border:0}
+.cvi.sv+.cvi{border-top:0}
+.cvlogo{width:38px;height:38px;border-radius:12px;color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none;letter-spacing:.3px}
+.cvb{flex:1;min-width:0}
+.cvh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.cvh b{font-size:15px;line-height:1.25}
+.dur{flex:none;font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--bg);color:var(--ink);white-space:nowrap}
+.dur.now{background:var(--lavD);color:#fff}
+.cvp{font-size:13.5px;color:#4D4F75;margin-top:1px;line-height:1.35}
+.cvbar{height:5px;background:#EFEDF6;border-radius:4px;margin-top:7px;overflow:hidden}
+.cvbar i{display:block;height:100%;border-radius:4px;opacity:.75}
+.cvd{font-size:12px;color:var(--mut);margin-top:5px}
+.vtag{color:var(--green);font-weight:700}
+.cvf{display:grid;gap:8px}
+.cvfi{display:flex;gap:10px;align-items:flex-start;background:var(--bg);border-radius:12px;padding:10px}
+.cvfi b{font-size:14px}
+.cvfic{font-size:18px;line-height:1}
+@media print{.stb{border:1px solid #999;background:#fff}}
+@media print{.nav,.noprint,.toast{display:none!important}body{background:#fff}.wrap{padding:0;max-width:none}.card,.sec{box-shadow:none;break-inside:avoid}.sec.p{display:none}}
+
+/* ---- Trame A4 (PDF / mail) ---- */
+#pd{display:none}
+.pd{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;color:#23253A;font-size:10.5pt;line-height:1.42;background:#fff}
+.pd .top{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #23253A;padding-bottom:8px;margin-bottom:12px}
+.pd .top h1{font-size:17pt;margin:0;letter-spacing:-.2px;font-weight:700}
+.pd .top .s{font-size:9pt;color:#6B6E85;text-align:right}
+.pd .info{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #D9DAE3;border-radius:6px;overflow:hidden;margin-bottom:12px}
+.pd .info div{padding:6px 9px;border-right:1px solid #E6E7EE;border-bottom:1px solid #E6E7EE}
+.pd .info div:nth-child(4n){border-right:0}.pd .info div:nth-last-child(-n+4){border-bottom:0}
+.pd .info small{display:block;font-size:7.5pt;text-transform:uppercase;letter-spacing:.06em;color:#8A8CA0;font-weight:600}
+.pd .info b{font-size:9.5pt;font-weight:600}
+.pd .box{border:1px solid #D9DAE3;border-left:4px solid var(--k);border-radius:6px;padding:9px 12px 10px;margin-bottom:10px}.pd .ax,.pd li{break-inside:avoid}.pd .box h2{break-after:avoid}
+.pd .box h2{font-size:9.5pt;text-transform:uppercase;letter-spacing:.07em;margin:0 0 6px;color:var(--k);font-weight:700;display:flex;gap:8px;align-items:center}
+.pd .box h2 i{font-style:normal;display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--k);color:#fff;font-size:8pt}
+.pd .syn{background:#F6F6F9;border-left-color:#23253A}
+.pd ul{margin:0;padding-left:16px}.pd ul.sub{margin-top:2px}.pd li{margin:2px 0}
+.pd .sub{color:#4A4D66;margin:2px 0 0}.pd .sub b{color:#23253A;font-weight:600}
+.pd .ax{margin:0 0 7px}.pd .ax:last-child{margin:0}.pd .ax .l{font-weight:600}
+.pd .pdE{color:#9A9CAE;font-style:italic}
+.pd table{width:100%;border-collapse:collapse;font-size:9pt}
+.pd td{padding:3px 6px;border-bottom:1px solid #EEEFF3}
+.pd td.lv{text-align:right;color:#4A4D66;white-space:nowrap}
+.pd .dots{display:inline-flex;gap:3px;margin-left:6px;vertical-align:-1px}.pd .dots span{width:7px;height:7px;border-radius:50%;background:#E3E4EB}.pd .dots span.on{background:#6C83B0}
+.pd .grid2{columns:2;column-gap:18px}
+.pd .src{font-size:8.5pt;color:#6B6E85}
+.pd .sign{margin-top:14px;display:flex;justify-content:space-between;font-size:9pt;color:#4A4D66}
+@media print{body.pdmode>*:not(#pd){display:none!important}body.pdmode #pd{display:block}html:has(body.pdmode),body.pdmode{background:#fff!important;background-image:none!important}body.pdmode::before,body.pdmode::after{display:none!important}@page{size:A4;margin:14mm 14mm 16mm}}
+
+/* ---- Organisation ---- */
+.orgc{position:relative;background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:12px;box-shadow:0 14px 30px -26px rgba(42,43,87,.5)}
+.orgc h3{margin:0 0 4px;font-size:18px}.orgc p{margin:0;color:var(--mut);font-size:14px;line-height:1.45}
+.orgc .ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;margin-bottom:10px;font-size:22px}
+.lockb{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 12px;border-radius:999px;background:#F1F0F6;color:#6E7191;font-size:12.5px;font-weight:700}
+.lockb svg{width:14px;height:14px}
+.prow{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}.prow:first-of-type{border-top:0}
+.prow .av{width:38px;height:38px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none}
+.prow .nm{flex:1;font-weight:600;font-size:15px}.prow .nm small{display:block;color:var(--mut);font-weight:500;font-size:12.5px}
+.prow.locked{opacity:.55}
+.mx{width:100%;border-collapse:separate;border-spacing:3px;font-size:12px;margin-top:8px}
+.mx th{font-weight:700;color:var(--mut);font-size:11px}.mx td.l{font-weight:600;color:var(--ink);white-space:nowrap;padding-right:4px}
+.mx td.c{width:30px;height:26px;border-radius:8px;text-align:center}
+.mx .v0{background:#F1F0F6}.mx .v1{background:#F9C9C0}.mx .v2{background:#F8E2B0}.mx .v3{background:#BFE6D3}
+.alert{background:#FFF3EC;border:1px solid #F7D6C4;border-radius:14px;padding:12px 14px;margin-top:10px;font-size:14px}
+.prep h4{margin:14px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--lavD)}
+.prep ul{margin:0;padding-left:18px}.prep li{margin:4px 0;font-size:15px;line-height:1.4}
+
+.dictbig{position:relative;display:flex;align-items:center;gap:18px;width:100%;margin-top:8px;padding:26px 22px;border:0;border-radius:28px;cursor:pointer;text-align:left;color:#fff;font:inherit;overflow:hidden;
+ background:radial-gradient(120% 140% at 0% 0%,#9D8BFF 0,transparent 55%),radial-gradient(120% 140% at 100% 100%,#F7B08A 0,transparent 55%),linear-gradient(120deg,#7F6BEA,#E78FB6 60%,#F4A98A);
+ box-shadow:0 22px 40px -18px rgba(108,93,211,.75),inset 0 1px 0 rgba(255,255,255,.45)}
+.dictbig:before{content:"";position:absolute;right:-40px;top:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
+.dictbig .mc{position:relative;flex:none;width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.95);color:#7F6BEA;display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(60,40,140,.6)}
+.dictbig .mc i{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,255,255,.7);animation:dpulse 2.4s ease-out infinite}
+.dictbig .mc i+i{animation-delay:1.2s}
+@keyframes dpulse{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.dictbig .tx{flex:1;position:relative}.dictbig b{display:block;font-size:22px;letter-spacing:-.3px}.dictbig small{display:block;font-size:13.5px;opacity:.9;margin-top:4px;line-height:1.35}
+.dictbig .ar{font-size:30px;font-weight:300;opacity:.9;position:relative}
+.dictbig:active{transform:scale(.98)}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<nav class="nav noprint" id="nav"></nav>
+<div class="toast" id="toast"></div>
+<div id="pd" class="pd"></div>
+<div class="ov noprint" id="ov" hidden>
+ <div class="ov-top"><span class="ov-state" id="ovState">J'écoute</span><span id="ovTime">0:00</span></div>
+ <div class="ov-name" id="ovName"></div>
+ <div class="ov-text" id="ovText"></div>
+ <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+ <div class="ov-help">Parlez naturellement. Commandes : <span class="cmd">virgule</span><span class="cmd">point</span><span class="cmd">à la ligne</span><span class="cmd">efface la dernière phrase</span><span class="cmd">terminé</span><span class="cmd">génère le compte-rendu</span></div>
+ <div class="ov-btns"><button data-act="ovpause" id="ovPause">Pause</button><button class="go" data-act="ovstop">Terminer</button></div>
+</div>
+
+<script>
+"use strict";
+/* =========================================================
+   DUO · outil de compte-rendu de visite duo
+   Conçu par Camille Lacroix · données stockées sur l'appareil
+   ========================================================= */
+
+const LS = "duo-coach-v1", LS_DRAFT = "duo-coach-draft";
+
+/* ---------- ÉQUIPE PAR DÉFAUT (modifiable dans Réglages) ---------- */
+const DEFAULT_TEAM = [
+  {id:"np", name:"Nathalie Pastor", role:"DR"},
+  {"id": "bb", "exp": [{"co": "Servier", "po": "Visiteuse médicale spécialiste", "d": "2024-08", "f": null, "v": 1}, {"co": "Sanofi", "po": "Visiteuse médicale spécialiste", "d": "2023-09", "f": "2024-08", "v": 1}, {"co": "Miharu", "po": "Stage commercial", "d": "2023-03", "f": "2023-03", "v": 0}, {"co": "CPTS du Lauragais", "po": "Coordinatrice", "d": "2021-04", "f": "2021-08", "v": 0}, {"co": "VACCITANIE", "po": "Projet promotion de la vaccination", "d": "2018-10", "f": "2019-12", "v": 0}, {"co": "MSD France", "po": "Visiteuse médicale ville", "d": "2001-12", "f": "2018-07", "v": 1}, {"co": "Berner France", "po": "Attachée commerciale", "d": "1999-08", "f": "2001-01", "v": 0}], "form": [{"ec": "TBS Education", "di": "Mastère spécialisé Manager marketing dans les industries de santé", "an": "2018-2019"}, {"ec": "GEMS Toulouse", "di": "Certificat de la visite médicale", "an": "2001"}, {"ec": "Lycée Aragon, Muret", "di": "BTS Force de vente", "an": ""}, {"ec": "BGE", "di": "Formation à la création d'entreprise", "an": "2018"}, {"ec": "EGIDEA", "di": "Formation web-marketing", "an": "2020"}, {"ec": "Inlingua", "di": "Anglais · Linguaskills", "an": "2020"}], "name": "Bénédicte Berdoues", "role": "DMS", "entree": "2024-08-01", "secteur": "Toulouse et périphérie, Occitanie", "profil": "expert", "parcours": "Visiteuse médicale spécialiste chez Servier en CDI depuis août 2024 (Occitanie) : cardiologues, endocrinologues et IPA, libéraux et hospitaliers. Déléguée de carrière, environ 19 ans de visite médicale : Sanofi, visiteuse médicale spécialiste en CDD auprès des cardiologues et endocrinologues hospitaliers, avec e-ADV (sept. 2023 - août 2024) ; MSD France, visiteuse médicale ville pendant près de 17 ans (déc. 2001 - juil. 2018), cardiologie et diabétologie à Toulouse et dans le 32, 47 et 09, auprès des MG, cardiologues, endo-diabétologues et pharmaciens, en face-à-face, à distance et par e-mails approuvés, avec identification des KOL et collaboration au marketing. Expérience de l'écosystème de santé régional : coordinatrice de la CPTS du Lauragais (2021) ; collectif VACCITANIE pour la promotion de la vaccination en Occitanie avec l'ARS, la CPAM et les URPS (2018-2019). Débuts commerciaux : attachée commerciale chez Berner (1999-2001). Formation : Mastère spécialisé Manager marketing dans les industries de santé, TBS Education (2018-2019) ; certificat de la visite médicale, GEMS Toulouse (2001) ; BTS Force de vente ; formations en création d'entreprise (BGE), web-marketing (EGIDEA) et anglais (Linguaskills)."},
+  {"id": "cl", "labs": 2, "exp": [{"co": "Servier France", "po": "Déléguée médicale spécialiste cardiologie", "d": "2026-10", "f": null, "v": 1}, {"co": "Servier France", "po": "Chef de produit junior neuro-oncologie", "d": "2026-03", "f": "2026-10", "v": 0}, {"co": "Lazeo", "po": "Responsable des opérations, médecine esthétique", "d": "2025-01", "f": "2025-12", "v": 0}, {"co": "Nautilus Food", "po": "Chief of staff, stratégie commerciale", "d": "2024-01", "f": "2024-04", "v": 0}, {"co": "Eurasanté", "po": "Assistante start-up manager (stage)", "d": "2023-04", "f": "2023-09", "v": 0}, {"co": "Université Tor Vergata, Rome", "po": "Interne en recherche préclinique", "d": "2022-09", "f": "2023-04", "v": 0}, {"co": "Bayer", "po": "Formatrice", "d": "2023-02", "f": "2023-03", "v": 0}, {"co": "Dr. Falk Pharma", "po": "Chef de produit junior gastro-entérologie (stage)", "d": "2022-07", "f": "2022-08", "v": 0}, {"co": "BioPharmLab Junior Pharma", "po": "Responsable marketing et communication", "d": "2021-09", "f": "2023-04", "v": 0}], "form": [{"ec": "HEC Paris · École polytechnique", "di": "MSc X-HEC Entrepreneurs", "an": "2023-2025"}, {"ec": "Université de Lille", "di": "Docteur en pharmacie, filière industrie", "an": "2018-2024"}, {"ec": "Universitat de València", "di": "Pharmacie (année d'échange)", "an": "2020-2021"}, {"ec": "Université de Lille", "di": "Licence de droit privé", "an": "2018-2021"}], "name": "Camille Lacroix", "role": "DMS", "entree": "2026-03-01", "secteur": "RS 503 · Montpellier, Nîmes, Perpignan, Béziers, Alès, Avignon, Rodez", "profil": "nouveau", "parcours": "Déléguée médicale spécialiste cardiologie chez Servier France depuis octobre 2026 (Montpellier), après 8 mois au siège comme chef de produit junior neuro-oncologie (Suresnes, mars - oct. 2026) sur le lancement de Voranigo (vorasidenib). Avant Servier : responsable des opérations en médecine esthétique chez Lazeo (2025), pilotage de la performance commerciale et des KPI ; chief of staff en stratégie commerciale chez Nautilus Food (2024) ; assistante start-up manager biotech chez Eurasanté (2023) ; recherche préclinique en oncologie à l'Université de Rome Tor Vergata (2022-2023) ; stage chef de produit junior gastro-entérologie chez Dr. Falk Pharma ; formatrice pour Bayer (2023) ; responsable marketing et communication de BioPharmLab Junior Pharma (2021-2023). Formation : Docteur en pharmacie, Université de Lille, filière industrie, option business (2018-2024), dont un an à l'Universitat de València ; MSc X-HEC Entrepreneurs, HEC Paris et École polytechnique (2023-2025) ; licence de droit privé, Université de Lille (2018-2021)."},
+  {"id": "jg", "exp": [{"co": "Servier", "po": "Déléguée spécialiste cardio-vasculaire et médecine interne", "d": "2023-02", "f": null, "v": 1}, {"co": "Boehringer Ingelheim", "po": "Déléguée vétérinaire", "d": "2020-08", "f": "2023-02", "v": 0}, {"co": "Dômes Pharma", "po": "Déléguée commerciale pharmacie", "d": "2019-06", "f": "2020-08", "v": 0}, {"co": "Boehringer Ingelheim", "po": "Déléguée spécialiste ville et hôpital", "d": "2014-09", "f": "2019-06", "v": 1}, {"co": "MSD France", "po": "Déléguée spécialiste ville et hôpital", "d": "2005-08", "f": "2015-09", "v": 1}, {"co": "Wyeth Vaccines Research", "po": "Déléguée médicale spécialiste ville et hôpital", "d": "1999-08", "f": "2005-03", "v": 1}], "form": [{"ec": "IUT Bordeaux Talence", "di": "DUT Techniques de commercialisation", "an": ""}, {"ec": "Insee com, Neuilly-sur-Seine", "di": "Diplôme de visite médicale", "an": "1999-2000"}], "name": "Johanna Gonnet", "role": "DMS", "entree": "2023-02-01", "secteur": "Bordeaux et périphérie, Nouvelle-Aquitaine", "profil": "expert", "parcours": "Déléguée médicale spécialiste cardio-vasculaire et médecine interne chez Servier en CDI depuis février 2023 (Nouvelle-Aquitaine). Déléguée de carrière, plus de 25 ans dans l'industrie pharmaceutique : déléguée vétérinaire chez Boehringer Ingelheim (2020-2023) ; déléguée commerciale pharmacie chez Dômes Pharma (2019-2020) ; déléguée spécialiste ville et hôpital chez Boehringer Ingelheim (2014-2019) ; déléguée spécialiste ville et hôpital chez MSD France pendant 10 ans (2005-2015) ; déléguée médicale spécialiste ville et hôpital chez Wyeth Vaccines Research, Paris (1999-2005), avec des lancements de produits. Formation : DUT Techniques de commercialisation, IUT Bordeaux Talence ; diplôme de visite médicale, Insee com Neuilly-sur-Seine (1999-2000)."},
+  {"id": "vl", "exp": [{"co": "Servier", "po": "Délégué médical", "d": "2026-01", "f": null, "v": 1}, {"co": "Menarini", "po": "Délégué médical", "d": "2016-10", "f": "2026-01", "v": 1}, {"co": "Colombeau Alu", "po": "Conseiller commercial", "d": "2016-06", "f": "2016-09", "v": 0}, {"co": "LV Habitat", "po": "Gérant, second œuvre du bâtiment", "d": "2014-01", "f": "2015-11", "v": 0}, {"co": "Altana Pharma · Nycomed · Takeda", "po": "Délégué médical", "d": "2004-07", "f": "2013-12", "v": 1}, {"co": "Mayoli-Spindler", "po": "Délégué médical", "d": "1999-07", "f": "2004-07", "v": 1}], "form": [{"ec": "Faculté de pharmacie de Montpellier", "di": "DEUST", "an": ""}, {"ec": "Faculté de droit de Sceaux", "di": "Droit", "an": ""}], "name": "Vincent Lefort", "role": "DMV", "entree": "2026-01-01", "secteur": "Montpellier et périphérie, Occitanie", "profil": "expert", "parcours": "Délégué médical chez Servier depuis janvier 2026 (Occitanie). Délégué de carrière, environ 25 ans de visite médicale avec plusieurs lancements de produits : Menarini (oct. 2016 - janv. 2026, 9 ans) ; Altana Pharma, devenu Nycomed puis Takeda (juil. 2004 - déc. 2013, 9 ans et demi) ; Mayoli-Spindler (juil. 1999 - juil. 2004). Parenthèse entrepreneuriale : gérant d'une entreprise du second œuvre du bâtiment, LV Habitat (2014-2015), puis conseiller commercial (2016). Formation : DEUST, Faculté de pharmacie de Montpellier ; Faculté de droit de Sceaux."},
+  {"id": "tc", "exp": [{"co": "Servier", "po": "Visiteur médical", "d": "2026-03", "f": null, "v": 1}, {"co": "Pharmafield (mission Pfizer)", "po": "Visiteur médical", "d": "2025-04", "f": "2026-03", "v": 1}, {"co": "ERATIS", "po": "Commercial terrain (alternance)", "d": "2023-09", "f": "2024-10", "v": 0}, {"co": "Bonici", "po": "Représentant (alternance)", "d": "2022-09", "f": "2023-10", "v": 0}, {"co": "i-Run", "po": "Responsable de projet événementiel", "d": "2021-09", "f": "2022-09", "v": 0}, {"co": "i-Run", "po": "Conseiller vendeur", "d": "2019-09", "f": "2021-09", "v": 0}], "form": [{"ec": "GEMS", "di": "Formation visiteur médical", "an": "2024-2026"}, {"ec": "ESG", "di": "Master Commerce marketing", "an": "2022-2024"}, {"ec": "ESG", "di": "Bachelor Commerce marketing", "an": "2019-2024"}, {"ec": "Lycée Saint-Pierre", "di": "BTS Technico-commercial", "an": "2019-2021"}], "name": "Théodoric Cros", "role": "DMV", "entree": "2026-03-01", "secteur": "Toulouse, Occitanie", "profil": "nouveau", "parcours": "Visiteur médical chez Servier en CDI depuis mars 2026 (Toulouse). Environ 1 an et demi de visite médicale : avant Servier, visiteur médical chez Pharmafield Groupe en mission pour Pfizer (avr. 2025 - mars 2026, CDD, Toulouse) ; formation GEMS visiteur médical. Profil commercial terrain : commercial en alternance chez ERATIS, secteur sud et sud-ouest (sept. 2023 - oct. 2024) ; représentant en alternance pour la franchise Bonici (2022-2023) ; conseiller vendeur puis responsable de projet événementiel chez i-Run (2019-2022). Formation : Master Commerce Marketing, ESG (2022-2024) ; Bachelor Commerce Marketing, ESG ; BTS Technico-commercial, Lycée Saint-Pierre (2019-2021)."},
+  {"id": "cc", "labs": 1, "exp": [{"co": "Servier France", "po": "Déléguée médicale CMVD", "d": "2026-01", "f": null, "v": 1}, {"co": "Servier Afrique de l'Ouest et du Centre", "po": "Product Manager Omnichannel", "d": "2024-07", "f": "2025-10", "v": 0}, {"co": "Servier North East Africa", "po": "Junior Product Manager (VIE)", "d": "2023-10", "f": "2024-07", "v": 0}, {"co": "Lundbeck France", "po": "Chef de produit junior migraine (alternance)", "d": "2022-09", "f": "2023-10", "v": 0}, {"co": "Second Stage Pharma", "po": "Responsable de gamme (stage)", "d": "2022-02", "f": "2022-07", "v": 0}, {"co": "DTU, Danemark", "po": "Stage en recherche", "d": "2021-06", "f": "2021-08", "v": 0}], "form": [{"ec": "TBS Education", "di": "MS Manager Marketing & Commercial dans les industries de santé", "an": "2022-2023"}, {"ec": "Polytech Nice Sophia", "di": "Ingénieure génie biologique, pharmacologie et biotechnologies", "an": "2019-2022"}, {"ec": "La Rochelle Université", "di": "IUT Génie biologique", "an": "2017-2019"}], "name": "Carla Costa", "role": "DMV", "entree": "2023-10-01", "secteur": "Montpellier, Occitanie", "profil": "nouveau", "parcours": "Déléguée médicale CMVD chez Servier France depuis janvier 2026 (Montpellier) : premier poste terrain. Avant, 2 ans de marketing produit chez Servier à l'international : Product Manager Omnichannel, Servier Afrique de l'Ouest et du Centre, Abidjan (juil. 2024 - oct. 2025), sur les campagnes CMVD (schémas de visite, supports visuels) ; Junior Product Manager diabète et HTA en VIE, Servier North East Africa, Nairobi (oct. 2023 - juil. 2024). Chef de produit junior migraine chez Lundbeck France en alternance (sept. 2022 - oct. 2023). Formation : ingénieure Polytech Nice Sophia, génie biologique, pharmacologie et biotechnologies (2019-2022) ; MS Manager Marketing & Commercial dans les Industries de Santé, TBS Education (2022-2023) ; IUT Génie biologique, La Rochelle (2017-2019)."},
+  {"id": "at", "exp": [{"co": "Servier", "po": "Visiteuse médicale", "d": "2026-01", "f": null, "v": 1}, {"co": "Menarini", "po": "Déléguée spécialiste · représentante hospitalière", "d": "2024-01", "f": "2025-12", "v": 1}, {"co": "Menarini", "po": "Visiteuse médicale", "d": "2004-11", "f": "2023-12", "v": 1}], "form": [], "name": "Anne Thile", "role": "DMV", "entree": "2026-01-01", "secteur": "", "profil": "expert", "parcours": "Visiteuse médicale chez Servier depuis janvier 2026. Déléguée de carrière, plus de 21 ans chez Menarini : visiteuse médicale (nov. 2004 - déc. 2023, 19 ans), puis déléguée spécialiste / représentante hospitalière, Gironde (janv. 2024 - déc. 2025). Formation non renseignée sur son profil."},
+  {"id":"na","name":"Nicolas Aubry","role":"DMV"}
+];
+
+/* ---------- COMPÉTENCES : mots-clés, conseils, objectifs ---------- */
+// mot-clé terminé par "!" = mot entier
+const THEMES = [
+ {id:"prep", label:"Préparation & ciblage", w:3,
+  kw:["prepar","ciblage","cible!","objectif de visite","historique","fiche medecin","plan de visite","connaissait","connait le medecin","s'etait renseign"],
+  adv:[
+   {t:"Fixer un objectif par médecin avant d'entrer", d:"Une phrase dans le CRM avant chaque visite : ce que le médecin doit penser ou faire en sortant (par exemple, identifier un patient sous bithérapie non contrôlé). Sans objectif, il n'y a pas de conclusion possible.", k:["objectif","cible","but"]},
+   {t:"Relire l'historique en 60 secondes", d:"Dernière visite, objection en suspens, engagement pris : reprendre là où on s'était arrêté montre au médecin qu'on l'a écouté et fait gagner 2 minutes d'entretien.", k:["historique","derniere","connaissait"]},
+   {t:"Adapter le message au profil", d:"Cardiologue hospitalier : données, recommandations, études. Cardiologue libéral : patient type et simplicité de prescription. Généraliste : un cas concret, un message, une preuve.", k:["profil","adapt"]}],
+  keep:"La préparation conditionne tout le reste : elle se voit dès la première question.",
+  q:"Avant ta 3e visite, quel était ton objectif précis, et qu'est-ce qui te permet de dire qu'il est atteint ?",
+  obj:"Noter un objectif de visite précis dans le CRM avant chaque visite du prochain duo."},
+ {id:"ouverture", label:"Accroche & ouverture", w:2,
+  kw:["accroche","ouverture","ouvert sa","ouvre!","introduction","entree en matiere","premier contact","se presente","presentation de soi","debut de visite","demarr","en entrant","reprend","derniere visite","dernier passage"],
+  adv:[
+   {t:"Ouvrir sur le médecin, pas sur le produit", d:"Démarrer par sa pratique ou par la visite précédente (« La dernière fois, vous me parliez de vos patients diabétiques… ») plutôt que par une présentation produit."},
+   {t:"Annoncer l'objet et la durée", d:"« J'ai deux points à partager, en 5 minutes. » Cela rassure un médecin pressé et donne un cadre à l'entretien."},
+   {t:"Accrocher par un fait ou un patient", d:"Une donnée épidémiologique ou un profil patient fait entrer dans le sujet scientifique en 15 secondes."}],
+  keep:"Une bonne ouverture obtient l'attention : c'est elle qui gagne les premières minutes.",
+  q:"Qu'est-ce qui, dans tes 30 premières secondes, a donné envie au médecin de t'écouter ?",
+  obj:"Ouvrir chaque visite sur la pratique du médecin ou sur un point de la visite précédente, sans entrer directement dans le produit."},
+ {id:"decouverte", label:"Découverte & questionnement", w:4,
+  kw:["question","decouverte","besoin","questionn","sond","creus","pratique du medecin","profil patient","ses patients","combien de patients","demande au medecin"],
+  adv:[
+   {t:"Deux questions ouvertes avant d'argumenter", d:"« Comment prenez-vous en charge… ? », « Qu'est-ce qui vous freine à… ? ». L'argument qui suit répond alors à un besoin exprimé, pas à un besoin supposé.", k:["question","ouvert","decouverte"]},
+   {t:"Faire quantifier", d:"« Sur 10 hypertendus sous bithérapie, combien sont à la cible ? » Le chiffre donné par le médecin devient le meilleur argument de la visite.", k:["combien","chiffre","patients"]},
+   {t:"Faire émerger un patient précis", d:"Passer du général au concret (« À quel patient pensez-vous en ce moment ? ») prépare directement l'engagement.", k:["patient"]}],
+  keep:"Les bonnes questions font parler le médecin et donnent l'argument juste : c'est la compétence la plus différenciante.",
+  q:"Qu'as-tu appris sur la pratique de ce médecin que tu ne savais pas avant la visite ?",
+  obj:"Poser au moins deux questions ouvertes avant toute argumentation, sur chaque visite du prochain duo."},
+ {id:"ecoute", label:"Écoute & reformulation", w:3,
+  kw:["ecout","reformul","coupe la parole","coupe!","interromp","laisse parler","laisse le medecin","silence","monologue","parle trop","parle beaucoup","bavard","temps de parole"],
+  adv:[
+   {t:"Reformuler avant de répondre", d:"« Si je comprends bien, ce qui vous gêne, c'est… » : le médecin se sent compris, et on vérifie qu'on répond à la vraie question.", k:["reformul","comprend"]},
+   {t:"Laisser 3 secondes après une question", d:"Ne pas combler le silence. Le médecin complète souvent avec l'information la plus utile.", k:["silence","coupe","interromp"]},
+   {t:"Viser un temps de parole partagé", d:"Le médecin doit parler au moins autant que le délégué. Un monologue, même brillant, fait décrocher.", k:["parle","monologue","bavard"]}],
+  keep:"Un médecin qui se sent écouté reçoit plus volontiers son délégué.",
+  q:"À quel moment le médecin a-t-il le plus parlé ? Qu'est-ce qui l'a déclenché ?",
+  obj:"Reformuler systématiquement la réponse ou l'objection du médecin avant d'argumenter."},
+ {id:"argu", label:"Argumentation & preuves", w:3,
+  kw:["argument","etude","donnee","preuve","message","benefice","petra","snyman","strathe","ascot","advance","hyvet","europa","progress!","reco!","recos!","recommandation","esc!","esh!","has!","aborde","presente le","presente l"],
+  adv:[
+   {t:"Un besoin, un bénéfice, une preuve", d:"Caractéristique → avantage pour le patient → preuve chiffrée (étude, recommandation). Un argument sans preuve s'oublie ; une preuve sans bénéfice ne convainc pas.", k:["argument","benefice","preuve"]},
+   {t:"Moins de messages, mieux portés", d:"Un message clé de campagne bien démontré vaut mieux que quatre messages survolés. Garder les autres pour la visite suivante.", k:["message","trop","enchain"]},
+   {t:"Citer la source avec précision", d:"Nom de l'étude, population, critère principal : c'est ce qu'attend un spécialiste et ce qui crédibilise le délégué.", k:["etude","source","chiffre"]}],
+  keep:"Une argumentation appuyée sur les preuves fonde la crédibilité scientifique.",
+  q:"Quel chiffre le médecin retiendra-t-il de ta visite ?",
+  obj:"Appuyer chaque message clé sur une preuve chiffrée et sourcée (étude ou recommandation)."},
+ {id:"supports", label:"Supports & aide de visite", w:2,
+  kw:["support","aide de visite","adv!","ipad","visuel","brochure","remis","slide","diapo","montre"],
+  adv:[
+   {t:"Montrer, puis se taire", d:"Présenter la page, laisser le médecin lire 5 secondes, puis commenter un seul chiffre."},
+   {t:"Une page par message", d:"Choisir avant la visite la page qui porte la preuve ; éviter de feuilleter l'aide de visite pendant l'entretien."},
+   {t:"Utiliser uniquement les supports validés", d:"Les supports promotionnels validés du cycle, et les documents à remettre prévus par les procédures."}],
+  keep:"Une aide de visite bien utilisée rend le message mémorisable.",
+  q:"Quelle page de l'aide de visite a fait réagir le médecin ?",
+  obj:"Préparer pour chaque visite la page d'aide de visite qui porte la preuve clé, et ne montrer qu'elle."},
+ {id:"objections", label:"Traitement des objections", w:4,
+  kw:["objection","reticen","resistance","refus","pas convaincu","contre-argument","repondu","reponse a","toux","oedeme","hypokali","hypotension","canicule","gelule","twicor","2+1","titrer"],
+  adv:[
+   {t:"Accueillir, creuser, puis répondre", d:"« Je comprends. Chez quel profil de patients l'avez-vous observé ? » Faire préciser l'objection avant d'y répondre évite de répondre à côté.", k:["hesit","pas su","difficult","destabil"]},
+   {t:"Une réponse, une preuve, une vérification", d:"Répondre par un fait sourcé, puis : « Est-ce que cela répond à votre question ? » L'objection n'est traitée que si le médecin le confirme.", k:["repon","preuve"]},
+   {t:"Concéder ce qui est vrai", d:"Reconnaître le point valable du médecin renforce la crédibilité ; contester un fait avéré l'affaiblit.", k:["contest","insist","argument"]}],
+  keep:"Traiter les objections avec calme et preuves est la marque d'un délégué expérimenté.",
+  q:"Quelle objection t'a mis le plus en difficulté aujourd'hui, et que répondrais-tu maintenant ?",
+  obj:"Sur chaque objection : la faire préciser par une question, répondre avec une preuve, vérifier l'adhésion."},
+ {id:"closing", label:"Conclusion & engagement", w:5,
+  kw:["conclu","closing","engagement","engage","s'engag","prochain patient","prescri","clotur","fin de visite","verrouill","demande d'engagement","quel patient","prochaine visite","revenir dans","suivi du patient"],
+  adv:[
+   {t:"Demander un engagement précis", d:"« Quel patient avez-vous en tête pour… ? » Un engagement nominatif (un patient, une situation clinique) est bien plus tenu qu'un accord de principe.", k:["engag","demand","conclu"]},
+   {t:"Résumer en une phrase avant de conclure", d:"Le bénéfice clé et la proposition de prescription : le médecin repart avec un message clair.", k:["resum","flou","clair"]},
+   {t:"Préparer la visite suivante", d:"« Je repasse dans un mois : on fait le point sur ce patient ? » Cela crée le suivi et justifie la prochaine visite.", k:["suivi","prochaine","revenir"]}],
+  keep:"Obtenir un engagement transforme l'échange en résultat : c'est à garder à chaque visite.",
+  q:"Sur quelle visite as-tu obtenu l'engagement le plus concret ? Qu'est-ce qui l'a permis ?",
+  obj:"Conclure chaque visite par une demande d'engagement concrète (un patient, une situation clinique)."},
+ {id:"relation", label:"Relation & posture", w:3,
+  kw:["tact","posture","relation","confiance","empath","chaleur","froid!","distant","familier","familiarite","attitude","ton!","regard","voix","assurance","a l'aise","aisance","nerveu","timide","stress","motiv","enthousias","energie","dynamique","sympath","courtois","respect","presence"],
+  adv:[
+   {t:"Choisir le bon moment", d:"Face à un médecin pressé ou contrarié, proposer un seul message en une minute, ou un autre rendez-vous. Insister dégrade la relation pour les visites suivantes : le tact, c'est d'abord le choix du moment.", k:["tact","insist","presse","agac"]},
+   {t:"Registre d'interlocuteur scientifique", d:"Rester sur un registre professionnel et laisser le médecin donner le niveau de familiarité. Parler patients, recommandations et pratique avant de parler produit.", k:["familier","ton","attitude","posture"]},
+   {t:"L'aisance vient de la préparation", d:"Rejouer à voix haute les trois objections les plus fréquentes avant la tournée : l'assurance suit la maîtrise du contenu.", k:["timide","stress","nerveu","assurance","aise"]}],
+  keep:"La qualité de la relation fait la fidélité du médecin et l'accès aux rendez-vous.",
+  q:"Comment as-tu perçu la disponibilité du médecin, et comment t'es-tu adapté(e) ?",
+  obj:"Adapter la longueur et le registre de chaque visite à la disponibilité perçue du médecin."},
+ {id:"temps", label:"Gestion du temps & concision", w:2,
+  kw:["temps!","trop long","longue","trop court","concis","synthe","rapide","minutes","duree","precipit","trop vite","s'eternis","efficace","digress"],
+  adv:[
+   {t:"Préparer une version 2 minutes", d:"Pour chaque médecin, savoir quel message unique porter s'il n'accorde que 2 minutes."},
+   {t:"Annoncer la durée et la tenir", d:"Respecter le temps annoncé est un signe de respect ; le médecin l'accordera plus facilement la fois suivante."},
+   {t:"Supprimer les préambules", d:"Aller de la question au message, sans transitions ni répétitions."}],
+  keep:"Être concis respecte le temps médical et donne envie de recevoir à nouveau.",
+  q:"Si tu n'avais eu que 2 minutes avec ce médecin, qu'aurais-tu gardé ?",
+  obj:"Préparer pour chaque médecin une version 2 minutes du message clé."},
+ {id:"science", label:"Maîtrise scientifique & produit", w:3,
+  kw:["connaissance","scientifi","pharmaco","molecule","mecanisme","posologie","dosage","indication","contre-indication","interaction","maitrise du produit","maitrise des etudes","maitrise des produits","approximati","erreur","imprecis","physiopath","effets indesirables"],
+  adv:[
+   {t:"Trois chiffres par produit, sans support", d:"Efficacité, tolérance, observance : trois chiffres sourcés par produit, connus par cœur."},
+   {t:"Maîtriser la gamme de dosages", d:"Savoir proposer le dosage d'initiation et l'ajustement : c'est la question pratique la plus fréquente des prescripteurs."},
+   {t:"Savoir dire « je vérifie »", d:"En cas de doute, ne pas improviser : noter la question et revenir avec la réponse validée, ou transmettre une demande d'information médicale. La crédibilité se construit aussi ainsi.", k:["erreur","approximati","imprecis"]}],
+  keep:"La maîtrise scientifique est attendue des spécialistes : c'est un atout de crédibilité majeur.",
+  q:"Quelle question du médecin aurais-tu aimé mieux maîtriser ?",
+  obj:"Réviser avant le prochain duo les trois chiffres clés et la gamme de dosages des produits du cycle."},
+ {id:"compliance", label:"Conformité & déontologie", w:6,
+  kw:["hors amm","rcp!","conformit","charte","avis de transparence","avis ct","smr","asmr","reglementaire","pharmacovigilance","effet indesirable rapporte","cadeau","echantillon","off label","off-label"],
+  adv:[
+   {t:"S'en tenir à l'AMM et aux supports validés", d:"Toute question hors AMM : ne pas y répondre soi-même, proposer une demande d'information médicale."},
+   {t:"Remettre les documents prévus", d:"Les documents réglementaires prévus par la charte et les procédures internes (RCP, avis de la Commission de la transparence…)."},
+   {t:"Remonter la pharmacovigilance", d:"Tout effet indésirable rapporté par le médecin se transmet selon la procédure interne, sans délai."}],
+  keep:"Une visite conforme protège le délégué, le médecin et l'entreprise.",
+  q:"Y a-t-il eu une question à laquelle tu ne pouvais pas répondre dans le cadre de l'AMM ? Comment l'as-tu gérée ?",
+  obj:"Orienter toute question hors AMM vers une demande d'information médicale, sans y répondre."},
+ {id:"reseau", label:"Écosystème & accès", w:2,
+  kw:["pharmac","staff","secretai","service!","chef de service","interne!","internes","kol","congres","reseau","acces","cadre de sante","rendez-vous","rdv"],
+  adv:[
+   {t:"Cartographier les décideurs", d:"Chef de service, praticiens, internes, pharmacien, secrétariat : savoir qui prescrit, qui influence, qui donne l'accès."},
+   {t:"Proposer un staff thématique", d:"Recommandations, rationnel de l'association, observance : un staff donne accès à toute l'équipe en une fois."},
+   {t:"Associer le pharmacien", d:"Il voit la délivrance et l'observance : c'est un relais pour le bon usage."}],
+  keep:"Un réseau entretenu ouvre les portes durablement.",
+  q:"Qui, dans ce service ou ce cabinet, influence la prescription en dehors du médecin vu aujourd'hui ?",
+  obj:"Identifier pour chaque établissement visité un interlocuteur d'accès et un projet de staff."},
+ {id:"organisation", label:"Organisation & suivi", w:1,
+  kw:["crm","reporting","planning","tournee","saisie","rythme","frequence","couverture","organis","retard","ponctu"],
+  adv:[
+   {t:"Saisir le CRM le jour même", d:"Objection, engagement, prochaine étape : 2 minutes après chaque visite, sinon l'information se perd."},
+   {t:"Planifier selon le potentiel", d:"Voir plus souvent les médecins à fort potentiel ; ne pas laisser la facilité d'accès dicter la tournée."},
+   {t:"Préparer la tournée la veille", d:"Ordre des visites, objectif par médecin, supports : 15 minutes la veille font gagner une heure sur la journée."}],
+  keep:"Une bonne organisation libère du temps pour les visites à fort potentiel.",
+  q:"Quels sont tes cinq médecins à plus fort potentiel non vus depuis plus d'un mois ?",
+  obj:"Renseigner le CRM (objection, engagement, prochaine étape) le jour même de chaque visite."}
+];
+const TH = Object.fromEntries(THEMES.map(t=>[t.id,t]));
+const PROFILS = {
+ nouveau:{l:"Nouveau délégué", c:"cb", p:"Posture explicative : montrer, faire une visite modèle, donner la réponse type. Un seul axe à la fois et beaucoup de reconnaissance précise pour installer la confiance."},
+ confirme:{l:"Délégué confirmé", c:"ca", p:"Coaching par questions : le laisser trouver la solution, compléter ensuite. L'objectif est l'autonomie sur l'axe choisi."},
+ expert:{l:"Délégué de carrière", c:"cg", p:"Posture de pair : le challenger sur les marges fines (engagement, messages du cycle, nouveaux prescripteurs) et valoriser son expertise, par exemple un partage de pratique en réunion ou le tutorat d'un nouveau."},
+ reconversion:{l:"En reconversion", c:"cv", p:"S'appuyer sur ses compétences d'origine et sécuriser en priorité la maîtrise des produits, des études et de la conformité."}
+};
+function profilOf(m){
+  if(!m) return ""; if(m.profil) return m.profil;
+  if(!m.entree) return ""; const y=(Date.now()-new Date(m.entree+"T12:00:00"))/31557600000;
+  return isNaN(y)?"":y<1?"nouveau":y<6?"confirme":"expert";
+}
+const GRID_THEMES = ["prep","ouverture","decouverte","ecoute","argu","supports","objections","closing","relation","temps","science","compliance"];
+const LEVELS = ["Non observé","À travailler","En progrès","Maîtrisé"];
+
+/* ---------- POLARITÉ ---------- */
+const POS = ["tres bien","bien!","bon!","bonne","excellent","parfait","top!","super!","bravo","maitris","reussi","pertinen","fluide","efficace","convaincant","a l'aise","naturel","clair","structur","precis","impeccable","solide","belle","bel!","beau!","a progresse","en progres","progresse","a su","sait!","assure","fort!","adapte","nickel","remarquable","beaucoup mieux","bien mieux","pas mal","juste!","agreable","rigoureu","professionnel","exemplaire","apprecie","j'ai aime","felicit","au point","bien vu","malin","intelligent","subtil","finesse","avec tact"];
+const NEG = ["manque","pas assez","trop!","oubli","hesit","difficult","a travailler","a ameliorer","ameliorer","dommage","aurait du","aurait pu","aurait fallu","faudrait","faible","maladroit","confus","brouillon","bavard","parle beaucoup","parle trop","monologue","recit","peu de","sans demander","sans poser","sans savoir","sans question","sans conclure","sans engagement","sans preuve","pas pose","pas demande","pas conclu","pas aborde","pas parle","pas presente","pas ose","n'ose","timide","perdu","flou","approximati","erreur","imprecis","coupe la parole","interromp","insist","agressif","precipit","trop vite","trop long","s'eternis","loupe","rate!","pas su","attention a","vigilan","decroch","pas convaincu","pas de question","pas d'engagement","pas de closing","pas de conclusion","pas d'objectif","pas prepare","ne pas","gagnerait","pourrait","devrait","il faut","il faudra","faut qu","a revoir","doit encore","pas encore","encore un peu","enchain","survol","lisait","recite","familier","froid!","distant","agac","sec!","nerveu","stresse","pas a l'aise","mal a l'aise","destabilis","depasse","ne sait pas","pas clair","pas tres","plutot moyen","moyen!","mitige","limite!"];
+const WELL_PRIV = ["fatigu","epuis","creve","moral","demotiv","surcharge","charge de travail","perso!","personnel","famil","sante!","malade","decourag","burn","a bout","pas en forme","demenag","enfant","grossesse","deuil","conge","arret","tension avec","conflit","frustr","enerv","a cran","usure","lassitude"];
+
+/* ---------- PRODUITS & ARGUMENTAIRES (modifiables) ---------- */
+const PRODUCTS = {
+ TRIPLIXAM:{cls:"Périndopril / indapamide / amlodipine · HTA", roles:["DMS","DMV"], kw:["triplixam","trithera"],
+  msg:"Contrôle tensionnel ET observance en une seule prise : 3 mécanismes complémentaires couvrant 24 h, 4 dosages en réserve de puissance. Démarrer à 5/1,25/5 et revoir le patient à 1 mois.",
+  proofs:["PETRA : −24 mmHg en 3 mois","Snyman : 59,9 % vs 26,9 % de patients observants","STRATHE : ajouter une molécule à faible dose est plus favorable que titrer"]},
+ COVERAM:{cls:"Périndopril / amlodipine · HTA, coronaropathie stable", roles:["DMS","DMV"], kw:["coveram"],
+  msg:"Bithérapie IEC + inhibiteur calcique en une prise, pour l'hypertendu et le coronarien stable.",
+  proofs:["ASCOT-BPLA et EUROPA : slides MSL, argument oral uniquement (cf. consignes internes)"]},
+ COSIMPREL:{cls:"Périndopril / bisoprolol · HTA, coronaropathie, IC", roles:["DMS","DMV"], kw:["cosimprel"],
+  msg:"IEC + bêtabloquant cardiosélectif en une prise, en substitution chez le patient déjà contrôlé par les deux molécules aux mêmes doses.", proofs:[]},
+ NATRIXAM:{cls:"Indapamide LP / amlodipine · HTA", roles:["DMS","DMV"], kw:["natrixam"],
+  msg:"Diurétique thiazidique-like + inhibiteur calcique en une prise, en substitution chez l'hypertendu déjà contrôlé par les deux molécules.", proofs:[]},
+ BIPRETERAX:{cls:"Périndopril / indapamide · HTA", roles:["DMS","DMV"], kw:["bipreterax","preterax"],
+  msg:"Bithérapie IEC + diurétique thiazidique-like.",
+  proofs:["ADVANCE (diabétique), HYVET (sujet très âgé), PROGRESS (post-AVC)"]},
+ LIPOROSA:{cls:"Rosuvastatine / ézétimibe · dyslipidémie · post-événement", roles:["DMS","DMV"], kw:["liporosa"],
+  msg:"Pour les patients en post-événement : l'association la plus puissante du marché, avec une cardio-protection démontrée (RACING) et une indication en post-SCA. Liporosa 10/10 d'emblée pour viser 0,55 g/L et au moins −50 % de LDL-c.", proofs:[]},
+ JUNALIZA:{cls:"Atorvastatine / ézétimibe · dyslipidémie · prévention du 1er événement", roles:["DMS","DMV"], kw:["junaliza"],
+  msg:"Pour prévenir le premier événement chez le patient à haut et très haut risque (hypertendu avec comorbidités, patient métabolique, diabétique) : dès le 10/10, l'efficacité d'un atorvastatine 80 avec une meilleure tolérance ; réserve de puissance avec le 20/10 et le 40/10. Formulation brevetée en micro-granules.", proofs:[]},
+ DAFLON:{cls:"Fraction flavonoïque purifiée · maladie veineuse", roles:["DMV"], kw:["daflon","diosmine","veineu","jambes lourdes","hemorroid"],
+  msg:"Soulager les symptômes de la maladie veineuse chronique (jambes lourdes, douleurs) et de la crise hémorroïdaire.", proofs:[]}
+};
+
+PRODUCTS.TRIPLIXAM.figs=[["−24 mmHg","en 3 mois · PETRA"],["59,9 vs 26,9 %","patients observants · Snyman"],["4 dosages","réserve de puissance"],["5/1,25/5","puis revoir à 1 mois"]];
+PRODUCTS.COVERAM.figs=[["IEC + ICa","une prise"]];
+PRODUCTS.COSIMPREL.figs=[["IEC + BB","une prise · substitution"]];
+PRODUCTS.NATRIXAM.figs=[["Diurétique + ICa","une prise · substitution"]];
+PRODUCTS.BIPRETERAX.figs=[["ADVANCE","diabétique"],["HYVET","sujet très âgé"],["PROGRESS","post-AVC"]];
+PRODUCTS.LIPOROSA.figs=[["0,55 g/L","et −50 % de LDL-c · post-événement"],["75 %","des patients post-événement à l'objectif"],["2× moins","d'arrêts vs statine haute dose"]];
+PRODUCTS.JUNALIZA.figs=[["≈ ator 80","dès le 10/10"],["20/10 · 40/10","réserve de puissance"]];
+PRODUCTS.DAFLON.figs=[["Symptômes","jambes lourdes, douleurs"]];
+
+/* ---------- OBJECTIONS FRÉQUENTES (argumentaire interne) ---------- */
+const OBJECTIONS = [
+ /* ---- HTA · RAO DMS/DMV ---- */
+ {id:"titrer", g:"HTA", p:["TRIPLIXAM"], kw:["2+1","2 + 1","deux plus un","titrer","titration","augmenter la dose","monter la dose","bitherapie avant"],
+  o:"« Je préfère faire 2+1 plutôt que de passer à Triplixam » / « Je préfère titrer la bithérapie avant »",
+  r:["Je comprends, docteur, votre positionnement. Cependant, Triplixam est aujourd'hui le traitement à adopter pour garantir le contrôle tensionnel et l'observance de vos patients en une seule prise par jour. Il est d'ailleurs reconnu par l'OMS comme médicament essentiel dans la prise en charge de l'hypertension.",
+     "Triplixam offre une efficacité tensionnelle prouvée en 3 mois, dès le 1er dosage, et une protection cardiovasculaire.",
+     "Grâce à la synergie des trois molécules (périndopril, amlodipine, indapamide), le taux de contrôle de la pression artérielle est significativement amélioré sur 24 heures, sans augmenter l'incidence des effets indésirables.",
+     "Par ailleurs, il a largement été démontré que le passage à une association faible dose avec une nouvelle molécule est plus favorable pour vos patients que de titrer le traitement initial.",
+     "Alors docteur, ne pas passer à Triplixam à ce stade, n'est-ce pas faire perdre une chance à vos patients d'être enfin protégés sur le plan cardiovasculaire ?"],
+  pr:"RAO DMS DMV · HTA"},
+ {id:"hypok", g:"HTA", p:["TRIPLIXAM"], kw:["hypokali","potassium","kaliemie"],
+  o:"« J'ai peur des hypokaliémies avec l'indapamide »",
+  r:["Je comprends votre préoccupation, docteur. Toutefois, d'après l'avis de la Commission de la transparence de Triplixam, aucun risque significatif n'a été relevé concernant son profil de tolérance.",
+     "Il a largement été démontré que, du fait de la contre-régulation, l'association d'un inhibiteur de l'enzyme de conversion et d'un diurétique thiazidique diminue le risque d'hypokaliémie induite par un diurétique seul, tout en respectant le métabolisme glucido-lipidique de vos patients (RCP, Roush).",
+     "Cependant, comme pour toute association, il est important de surveiller la kaliémie : avant le début du traitement, après son introduction ou toute modification de doses, puis régulièrement une fois le traitement établi. C'est d'ailleurs dans les recommandations françaises et européennes."],
+  pr:"RAO DMS DMV · avis CT, RCP, Roush"},
+ {id:"toux", g:"HTA", p:["TRIPLIXAM","COVERAM"], kw:["toux","tousse"],
+  o:"« J'ai peur de la toux avec le périndopril »",
+  r:["Les IEC peuvent effectivement provoquer de la toux, tout comme les ARA2.",
+     "Cependant, il a été démontré que, parmi les IEC, le périndopril est celui qui cause le moins de toux (2,2 % contre 7 % pour l'énalapril). À dose maximale de périndopril (10 mg), le taux de toux est inférieur à 1 %.",
+     "Par ailleurs, lorsqu'un traitement par IEC est combiné à un inhibiteur calcique, comme dans Coveram, l'incidence de la toux est significativement réduite.",
+     "Et lorsqu'une toux survient, elle disparaît dans 25 à 50 % des cas, même si le traitement est poursuivi (après 2 à 8 mois de suivi).",
+     "Il serait donc regrettable de priver vos patients des bénéfices de protection cardiovasculaire (réduction du risque d'AVC, d'IDM, de mortalité cardiovasculaire et de mortalité totale) par crainte de la toux, d'autant plus que les recommandations indiquent la supériorité des IEC par rapport aux ARA2."],
+  pr:"RAO DMS DMV · HTA"},
+ {id:"coveram10", g:"HTA", p:["TRIPLIXAM","COVERAM"], kw:["sous coveram","coveram 10","coveram dix"],
+  o:"« Mon patient est sous Coveram 10/10, je ne vais pas le repasser sur Triplixam 5/1,25/5 »",
+  r:["Je comprends, docteur, votre positionnement.",
+     "Toutefois, avec l'indapamide en plus, Triplixam 5/1,25/5 intègre un troisième mécanisme d'action par rapport à Coveram.",
+     "Grâce à la synergie des trois molécules, le taux de contrôle de la pression artérielle est significativement amélioré, sans augmenter l'incidence des effets indésirables.",
+     "L'étude STRATHE (Mourad JJ et al., Journal of Hypertension 2004) a montré que le passage à une association faible dose avec une nouvelle molécule est plus favorable pour vos patients que d'ajuster la dose du traitement initial.",
+     "Par ailleurs, en débutant avec le dosage initial de Triplixam, vous disposez d'une réserve de puissance avec les trois autres dosages, pour ajuster le traitement si nécessaire."],
+  pr:"RAO DMS DMV · STRATHE"},
+ {id:"soir", g:"HTA", p:["TRIPLIXAM"], kw:["le soir","au coucher","chronotherap","prise du soir","prendre le soir"],
+  o:"« Je préfère que mon patient prenne son traitement le soir »",
+  r:["Je comprends, docteur, votre positionnement.",
+     "Il est tout à fait possible de suivre cette posologie pour vos patients.",
+     "Les dernières études montrent que la chronothérapie dans la gestion de l'hypertension artérielle n'est plus soutenue : il n'y a pas de bénéfice supplémentaire à administrer un antihypertenseur le soir plutôt que le matin, en termes de bénéfices cardiovasculaires et de tolérance.",
+     "Ainsi, les recommandations de l'ESC et de l'ESH laissent le choix de l'horaire selon les habitudes du patient, la tolérance, l'adhérence et les résultats de MAPA, l'objectif étant de favoriser l'adhérence et un contrôle tensionnel stable sur 24 heures.",
+     "Avec Triplixam, peu importe l'heure de prise : les trois molécules de référence assurent une couverture de 24 heures."],
+  pr:"RAO DMS DMV · recommandations ESC/ESH"},
+ {id:"separe", g:"HTA", p:["TRIPLIXAM"], kw:["separement","molecules separees","trois molecules separ","3 molecules separ","choisir leur heure","heure de prise"],
+  o:"« Je préfère prescrire les 3 molécules séparément pour pouvoir choisir leur heure de prise selon les besoins du patient »",
+  r:["Je comprends, docteur, votre positionnement.",
+     "Toutefois, Triplixam vise à améliorer le contrôle de l'hypertension et à simplifier le traitement pour améliorer l'observance.",
+     "En combinant 3 molécules de référence (périndopril, amlodipine, indapamide), Triplixam offre à vos patients, en un seul comprimé par jour, une efficacité tensionnelle, une protection cardiovasculaire et une couverture des 24 heures.",
+     "De plus, Triplixam est disponible en 4 dosages, ce qui vous permet d'ajuster les doses selon les besoins du patient.",
+     "Vous gardez ainsi le contrôle du traitement tout en améliorant l'efficacité tensionnelle et l'observance. Vous pouvez également ajuster l'heure de prise selon les besoins du patient."],
+  pr:"RAO DMS DMV · HTA"},
+ {id:"oubli", g:"HTA", p:["TRIPLIXAM"], kw:["oublie triplixam","oublie le traitement","oublie son traitement","oublie 3 molecules","oublie trois molecules","oubli de prise","patient oublie"],
+  o:"« J'ai peur que mon patient oublie Triplixam : cela voudrait dire qu'il oublie 3 molécules »",
+  r:["Je comprends votre préoccupation.",
+     "Toutefois, cela ne doit pas en être une : Triplixam associe 3 molécules de référence, périndopril, amlodipine et indapamide, qui assurent une couverture sur 24 heures.",
+     "De plus, ces molécules ne provoquent pas d'effet rebond.",
+     "Par ailleurs, selon l'avis de la Commission de la transparence de Triplixam, aucun nouveau signal de sécurité n'a été relevé concernant les effets indésirables ou les erreurs médicamenteuses.",
+     "Au-delà du traitement, il est essentiel d'impliquer le patient dans la prise en charge de son hypertension pour qu'il prenne correctement ses traitements."],
+  pr:"RAO DMS DMV · avis CT"},
+ {id:"chaleur", g:"HTA", p:["TRIPLIXAM"], kw:["canicule","chaleur","deshydrat","episode chaud"],
+  o:"« Avec la chaleur, je ne prescris pas Triplixam car je ne peux pas supprimer le diurétique »",
+  r:["Je comprends votre préoccupation, docteur. Toutefois, Triplixam est aujourd'hui le traitement à adopter pour garantir le contrôle tensionnel et l'observance de vos patients en une seule prise par jour, et les protéger contre le risque cardiovasculaire.",
+     "Il est d'ailleurs reconnu par l'OMS comme médicament essentiel dans la prise en charge de l'hypertension.",
+     "Grâce à la synergie des trois molécules de référence, le taux de contrôle de la pression artérielle est significativement amélioré, avec une couverture de 24 heures, sans augmenter l'incidence des effets indésirables.",
+     "Il convient toutefois de surveiller les signes cliniques, en particulier chez le sujet âgé (communiqué de la SFHTA sur l'épisode caniculaire), s'il y a un réel besoin de diminuer les médicaments ou de les arrêter transitoirement.",
+     "Si vous devez suspendre Triplixam durant les épisodes de chaleur, il est essentiel de revoir le patient ensuite pour le réintroduire, afin de contrôler sa tension et de garantir une protection cardiovasculaire efficace."],
+  pr:"RAO DMS DMV · communiqué SFHTA"},
+ /* ---- HTA · fiches précédentes ---- */
+ {id:"oedeme", g:"HTA", p:["TRIPLIXAM","COVERAM"], kw:["oedeme","chevilles","jambes gonfl"],
+  o:"« Je me méfie de l'amlodipine à cause des œdèmes »",
+  r:["Chez quel profil, dans quelle proportion ?","L'association à un IEC réduit le risque d'œdème de 38 % et le risque d'arrêt pour œdème de 62 % par rapport à l'inhibiteur calcique seul : le périndopril contre-régule l'œdème de l'amlodipine."],
+  pr:"Fiches argumentaire précédentes · Makani 2011"},
+ {id:"hypot", g:"HTA", p:["TRIPLIXAM"], kw:["hypotension","tension trop basse","chute de tension"],
+  o:"« Je crains l'hypotension »",
+  r:["Avez-vous déjà observé cela chez vos patients ?","Triplixam est un antihypertenseur, pas un hypotenseur : il ramène une pression élevée à la cible. Avis de la Commission de la transparence : pas de risque significatif relevé."],
+  pr:"Fiches argumentaire précédentes · avis CT"},
+ /* ---- DYSLIPIDÉMIE · RAO DMS/DMV ---- */
+ {id:"rosu510", g:"DYS", p:["LIPOROSA"], kw:["5/10","5 10","cinq dix","petit dosage","faible dosage","commencer petit","plus petit dosage"],
+  o:"« Vous n'avez pas le 5/10, je préfère commencer par un petit dosage »",
+  r:["Docteur, Servier vous propose un portefeuille complet, adapté à tous vos profils de patients.",
+     "Avec Liporosa 10/10, vous avez l'efficacité de la baisse du LDL-c avec une excellente tolérance. Une méta-analyse portant sur 12 essais randomisés montre une tolérance équivalente entre la rosuvastatine 5 mg et 10 mg : avec Liporosa 10/10, vous visez une stratégie efficace sans compromettre la sécurité de vos patients.",
+     "Pour vos patients en post-événement, les recommandations de l'ESC préconisent une bithérapie d'emblée afin d'atteindre la cible de 55 mg/dL et une baisse d'au moins 50 % du LDL-c. Instaurer d'emblée Liporosa 10/10 augmente significativement les chances d'atteindre cette cible et limite le temps d'exposition à un LDL élevé, avec une excellente tolérance (étude ACTE).",
+     "Chez des patients athéromateux (haut et très haut risque CV), seulement 31,6 % atteignent < 70 mg/dL avec le petit dosage 5/10, contre 53,7 % avec le dosage standard Liporosa 10/10. Avec un petit dosage, des patients qui doivent atteindre 55 mg/dL resteraient exposés plus longtemps à un LDL-c élevé, avec un risque de récidive accru.",
+     "Pour prévenir le premier événement chez les patients à haut et très haut risque, pensez à Junaliza : dès le 10/10, l'efficacité d'un atorvastatine 80 avec une meilleure tolérance, et une réserve de puissance avec le 20/10 et le 40/10."],
+  pr:"RAO DMS DMV · étude ACTE, recommandations ESC"},
+ {id:"ator8010", g:"DYS", p:["LIPOROSA","JUNALIZA"], kw:["80/10","80 10","ator 80","atorvastatine 80","sortent de l'hopital","sort de l'hopital"],
+  o:"« Je reçois beaucoup de patients qui sortent de l'hôpital avec du 80/10 : comment je fais avec votre Junaliza ? »",
+  r:["Docteur, ce n'est pas un souci, car la solution la plus efficace au long cours est Liporosa.",
+     "Avec Liporosa, vous avez l'association la plus puissante du marché, avec un excellent ratio efficacité/tolérance, une cardio-protection démontrée par l'étude RACING et une indication en post-SCA qui doit vous conforter.",
+     "Liporosa 10/10 est l'association de référence qui permet à 75 % des patients post-événement d'atteindre leur objectif, grâce à une baisse rapide et puissante du LDL-c, avec une meilleure adhésion au traitement (2 fois moins d'arrêts qu'avec une statine à haute dose).",
+     "À l'hôpital, ils traitent l'événement ; mais tout repose sur vous pour que votre patient ait un traitement efficace et bien toléré."],
+  pr:"RAO DMS DMV · étude RACING"},
+ {id:"pas8010", g:"DYS", p:["LIPOROSA","JUNALIZA"], kw:["pas le 80","monter jusqu'au 80","monter au 80","pas de 80"],
+  o:"« Vous n'avez pas le 80/10, je ne vais pas le prescrire » / « Je ne peux pas monter jusqu'au 80/10 »",
+  r:["Je peux comprendre votre frustration, docteur, mais nous sommes en cohérence avec notre communication depuis le lancement de Liporosa.",
+     "Pour vos patients ayant fait un événement CV et qui doivent atteindre 0,55 g/L, Liporosa est l'association la plus efficace disponible, avec une cardio-protection démontrée et le meilleur ratio efficacité/tolérance. Dès Liporosa 10/10, vous avez une efficacité égale ou supérieure au 80/10, avec une bien meilleure tolérance.",
+     "Pour vos patients à haut et très haut risque CV n'ayant pas encore fait d'événement, au lieu de titrer la statine en monothérapie, prescrivez Junaliza 10/10 : une efficacité équivalente à l'atorvastatine 80 mg avec une meilleure tolérance, en raison de l'effet dose-dépendant.",
+     "Junaliza, c'est l'association pour les patients que vous voyez tous les jours à haut et très haut risque : l'hypertendu avec comorbidités, le patient métabolique, le diabétique… avec une réserve de puissance (20/10 et 40/10)."],
+  pr:"RAO DMS DMV · étude RACING"},
+ {id:"myalgies", g:"DYS", p:["LIPOROSA","JUNALIZA"], kw:["myalgie","douleurs musculaires","crampes","douleur musculaire","mal aux muscles"],
+  o:"« Les statines sont associées à des myalgies »",
+  r:["Vous avez raison, docteur, les myalgies sont bien connues et peuvent gêner le patient. Les études sur les statines montrent que seulement 1 à 10 % des patients rapportent des douleurs musculaires.",
+     "Mais le bénéfice cardiovasculaire lié à la réduction du LDL-c est majeur et solidement démontré. Avant d'envisager un arrêt définitif d'une statine, il est important d'évaluer le lien de causalité réel entre le traitement et les symptômes.",
+     "Servier met à votre disposition le score de Rosenson, un outil simple pour objectiver la situation et adapter la stratégie sans priver inutilement le patient d'un traitement efficace. Il prend en compte la localisation des douleurs, leur chronologie d'apparition et l'approche déchallenge/rechallenge.",
+     "Comme il y a un effet dose-dépendant, mieux vaut passer à la bithérapie que titrer la statine, pour une meilleure tolérance et l'efficacité recherchée."],
+  pr:"RAO DMS DMV · score de Rosenson (SAMS-CI)"},
+ {id:"junanouv", g:"DYS", p:["JUNALIZA"], kw:["rien de nouveau","pas de nouveaute","generique","deja connu","on connait deja","produit qu'on connait"],
+  o:"« Junaliza, c'est un produit qu'on connaît, rien de nouveau. Il existe déjà des génériques avec une gamme complète »",
+  r:["C'est vrai que vous avez l'habitude de manier ces molécules, mais Servier vous propose aujourd'hui un portefeuille complet qui répond à tous vos besoins selon le risque du patient : Liporosa pour limiter les récidives CV en post-événement, Junaliza pour prévenir le premier événement.",
+     "Junaliza bénéficie d'un circuit court de production qui garantit son approvisionnement.",
+     "C'est une formulation innovante brevetée : une gélule contenant des micro-granules d'atorvastatine à libération immédiate, pour une meilleure diffusion sanguine, et qui assure une meilleure absorption de l'ézétimibe au niveau de l'intestin.",
+     "En écrivant le nom de marque, vous favorisez l'adhérence du patient en vous assurant qu'il récupère la même boîte en pharmacie."],
+  pr:"RAO DMS DMV · dyslipidémie"},
+ {id:"gelule", g:"DYS", p:["LIPOROSA","JUNALIZA"], kw:["gelule","encore une gelule","twicor","avaler"],
+  o:"« Encore une gélule ?! »",
+  r:["Qu'est-ce qui vous gêne avec les gélules ? La gélule a été élue galénique préférée des Français.",
+     "Servier est un laboratoire expert dans la formulation d'associations fixes, qui a fait le choix de la gélule pour ses associations hypolipémiantes afin de garantir la biodisponibilité de l'ézétimibe sur son site d'action, l'intestin : c'est ce choix galénique qui optimise son efficacité.",
+     "Cette expertise galénique se retrouve aussi bien dans Liporosa que dans Junaliza.",
+     "Avec Junaliza, Servier est allé encore plus loin, grâce à une formulation innovante brevetée de micro-granules d'atorvastatine à libération immédiate, pour une meilleure absorption intestinale."],
+  pr:"RAO DMS DMV · dyslipidémie"}
+];
+
+/* ---------- ÉTUDES (références vérifiées) ---------- */
+const STUDIES={
+ PETRA:{n:"PETRA",ref:"Étude observationnelle, 11 209 patients, Hongrie (PubMed)",url:"https://pubmed.ncbi.nlm.nih.gov/30625078/"},
+ SNYMAN:{n:"Snyman 2024",ref:"J Hypertens 2024;42:136-142",url:"https://doi.org/10.1097/HJH.0000000000003570"},
+ STRATHE:{n:"STRATHE",ref:"Mourad JJ et al. J Hypertens 2004;22:2379-86 (recherche PubMed)",url:"https://pubmed.ncbi.nlm.nih.gov/?term=Mourad+STRATHE+perindopril+indapamide+sequential+monotherapy+stepped-care"},
+ MAKANI:{n:"Makani 2011",ref:"Am J Med 2011;124:128-35",url:"https://doi.org/10.1016/j.amjmed.2010.08.007"},
+ ROUSH:{n:"Roush 2015",ref:"Hypertension 2015;65:1041-6",url:"https://pubmed.ncbi.nlm.nih.gov/25733245/"},
+ ADVANCE:{n:"ADVANCE",ref:"Lancet 2007;370:829-40",url:"https://pubmed.ncbi.nlm.nih.gov/17765963/"},
+ HYVET:{n:"HYVET",ref:"N Engl J Med 2008;358:1887-98",url:"https://pubmed.ncbi.nlm.nih.gov/18378519/"},
+ PROGRESS:{n:"PROGRESS",ref:"Lancet 2001;358:1033-41",url:"https://pubmed.ncbi.nlm.nih.gov/11589932/"},
+ ASCOT:{n:"ASCOT-BPLA",ref:"Lancet 2005;366:895-906",url:"https://doi.org/10.1016/S0140-6736(05)67185-1"},
+ EUROPA:{n:"EUROPA",ref:"Lancet 2003;362:782-8",url:"https://pubmed.ncbi.nlm.nih.gov/13678872/"},
+ ESC_LIPIDS:{n:"Recos ESC/EAS 2019",ref:"Eur Heart J 2020;41:111-88",url:"https://doi.org/10.1093/eurheartj/ehz455"},
+ RACING:{n:"RACING",ref:"Kim BK et al. Lancet 2022;400:380-390",url:"https://pubmed.ncbi.nlm.nih.gov/35863366/"},
+ ACTE:{n:"ACTE",ref:"Bays HE et al. Am J Cardiol 2011 (PubMed)",url:"https://pubmed.ncbi.nlm.nih.gov/21596364/"},
+ ROSENSON:{n:"Score de Rosenson (SAMS-CI)",ref:"Rosenson RS et al. Cardiovasc Drugs Ther 2017;31:179-186",url:"https://pubmed.ncbi.nlm.nih.gov/28421332/"},
+ CT_TRIPLIXAM:{n:"Avis CT Triplixam",ref:"HAS, Commission de la transparence, octobre 2024",url:"https://www.has-sante.fr/upload/docs/evamed/CT-20891_TRIPLIXAM_PIC_INS_AvisDef_CT20891.pdf"}
+};
+const DOCI='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>';
+function objCard(o,bare){return `<div class="objc${bare?" bare":""}">${bare?"":`<div class="q">${h(o.o)}</div>`}<ul class="rl">${o.r.map(x=>`<li>${h(x)}</li>`).join("")}</ul><span class="src">${h(o.pr)}</span>${stBtns(OBJ_ST[o.id])}</div>`}
+function stBtns(keys){keys=(keys||[]).filter(k=>STUDIES[k]);if(!keys.length)return "";return `<div class="stbs">${keys.map(k=>`<a class="stb" href="${STUDIES[k].url}" target="_blank" rel="noopener" title="${h(STUDIES[k].ref)}">${h(STUDIES[k].n)} ${DOCI}</a>`).join("")}</div>`}
+const PROD_ST={TRIPLIXAM:["PETRA","SNYMAN","STRATHE","CT_TRIPLIXAM"],COVERAM:["ASCOT","EUROPA"],BIPRETERAX:["ADVANCE","HYVET","PROGRESS"],LIPOROSA:["RACING","ACTE","ESC_LIPIDS"],JUNALIZA:["ROSENSON"]};
+const OBJ_ST={titrer:["STRATHE"],hypok:["CT_TRIPLIXAM","ROUSH"],coveram10:["STRATHE"],oubli:["CT_TRIPLIXAM"],oedeme:["MAKANI"],hypot:["CT_TRIPLIXAM"],rosu510:["ACTE"],ator8010:["RACING"],pas8010:["RACING"],myalgies:["ROSENSON"]};
+
+/* =========================================================
+   STOCKAGE
+   ========================================================= */
+let S = load();
+let DRAFT = loadDraft();
+function blank(){return {team:DEFAULT_TEAM.map(x=>({...x})),reports:[],campaign:{cycle:"",priority:["TRIPLIXAM","LIPOROSA"],notes:"",msgs:{}}}}
+function load(){try{const d=JSON.parse(localStorage.getItem(LS));if(d&&d.team){DEFAULT_TEAM.forEach(df=>{const m=d.team.find(t=>t.id===df.id);if(!m)return;if(df.id==="tc")m.name=df.name;["entree","secteur","parcours","profil","exp","form"].forEach(k=>{if(df[k]&&!m[k])m[k]=df[k]});if(df.labs!=null&&m.labs==null)m.labs=df.labs});d.campaign=Object.assign(blank().campaign,d.campaign||{});d.reports=d.reports||[];return d}}catch(e){}return blank()}
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){toast("Impossible d'enregistrer sur ce navigateur")}}
+function loadDraft(){try{return JSON.parse(localStorage.getItem(LS_DRAFT))||null}catch(e){return null}}
+function saveDraft(){try{DRAFT?localStorage.setItem(LS_DRAFT,JSON.stringify(DRAFT)):localStorage.removeItem(LS_DRAFT)}catch(e){}}
+
+/* =========================================================
+   MOTEUR D'ANALYSE (100 % local)
+   ========================================================= */
+const norm = s => (s||"").toLowerCase().replace(/œ/g,"oe").replace(/æ/g,"ae").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[’`´]/g,"'");
+const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+function re(list){return new RegExp("(?:^|[^a-z0-9])(?:"+list.map(k=>k.endsWith("!")?esc(k.slice(0,-1))+"(?![a-z0-9])":esc(k)).join("|")+")","g")}
+const RE_POS=re(POS), RE_NEG=re(NEG), RE_WELL=re(WELL_PRIV), RE_PRESC=re(["il faut","faudrait","il faudra","devrait","doit encore","gagnerait","a travailler","a ameliorer","axe de progres","a revoir"]);
+THEMES.forEach(t=>t.re=re(t.kw));
+OBJECTIONS.forEach(o=>o.re=re(o.kw));
+Object.values(PRODUCTS).forEach(p=>p.re=re(p.kw));
+const hits=(t,r)=>{r.lastIndex=0;return (t.match(r)||[]).length};
+
+const CONNECT=/(?=(?:^|\s)(?:mais|par contre|en revanche|cependant|toutefois|n[ée]anmoins|et puis|ensuite|par ailleurs|d'autre part|sinon|autre point|point positif|point n[ée]gatif|côté)\s)/i;
+function clauses(text){
+  const out=[];
+  (text||"").replace(/\r/g,"").split(/[.!?;\n]+/).forEach(s=>{
+    s.split(CONNECT).forEach(c=>{ c=c.trim(); if(c) out.push(c) });
+  });
+  return out;
+}
+function clean(c){
+  let s=" "+c+" ";
+  s=s.replace(/(\s)(euh+|heu+|bah|ben|bon ben|du coup|en fait|voil[aà]|genre|tu vois|on va dire)(?=[\s,]|$),?/gi,"$1");
+  s=s.trim().replace(/,?\s*quoi$/i,"");
+  for(let i=0;i<3;i++) s=s.replace(/^(mais|par contre|en revanche|cependant|toutefois|n[ée]anmoins|et puis|ensuite|par ailleurs|d'autre part|sinon|et|alors|donc|aussi|autre point|point positif|point n[ée]gatif)\b[\s,:]*/i,"");
+  s=s.replace(/\s{2,}/g," ").replace(/^[,\s-]+|[,\s-]+$/g,"");
+  return s?s.charAt(0).toUpperCase()+s.slice(1):s;
+}
+function polarity(nt){
+  let p=hits(nt,RE_POS), n=hits(nt,RE_NEG)+hits(nt,RE_PRESC);
+  if(/\b(pas|jamais|peu|plus)\s+(tres\s+|assez\s+|vraiment\s+|toujours\s+|super\s+|si\s+|forcement\s+)?(bien|bon|bonne|clair|efficace|pertinent\w*|fluide|convaincant\w*|a l'aise|naturel\w*|structure\w*|precis\w*|adapte\w*|juste)\b/.test(nt)) p-=2;
+  if(/\b(n'a pas|n'ont pas|sans|jamais|pas)\s+(\w+\s+)?(hesite\w*|oublie\w*|manque\w*|insiste\w*|perdu\w*|decroche\w*)/.test(nt)) n-=2,p+=1;
+  if(/\bn(e\s|')\s?\w+(\s[\w']+){0,4}\s(pas|jamais|que|aucun\w*|guere)\b/.test(nt) && !/\bn'a pas (hesite|oublie|manque)/.test(nt)) n+=1;
+  const s=p-n; return s>0?1:s<0?-1:0;
+}
+function themeOf(nt){
+  let best=null,bh=0;
+  THEMES.forEach(t=>{const h=hits(nt,t.re);if(h>bh||(h===bh&&h>0&&t.w>best.w)){bh=h;best=t}});
+  return best?best.id:null;
+}
+function pickAdvice(th,txt){
+  const t=TH[th], nt=norm(txt);
+  let bi=0,bs=-1; t.adv.forEach((a,i)=>{const s=(a.k||[]).reduce((n,k)=>n+(nt.includes(k)?1:0),0);if(s>bs){bs=s;bi=i}});
+  return {main:t.adv[bi], alt:t.adv[(bi+1)%t.adv.length]};
+}
+function detectProducts(items){
+  const set=new Set();
+  items.forEach(it=>{ if(it.priv) return;
+    Object.entries(PRODUCTS).forEach(([k,p])=>{ if(hits(it.nt,p.re)){
+      if(/pas (\w+ )?(aborde|parle|presente|evoque|mentionne)|oubli|n'a pas (\w+ )?(parle|aborde|presente)/.test(it.nt)) return;
+      set.add(k);
+    }});
+  });
+  return set;
+}
+function productMsg(k){return (S.campaign.msgs&&S.campaign.msgs[k])||PRODUCTS[k].msg}
+
+function analyse(text, member, ctx){
+  const items = clauses(text).map(raw=>{
+    const nt=norm(raw), c=clean(raw), words=c.split(/\s+/).length;
+    const th=themeOf(nt), pol=polarity(nt), priv=hits(nt,RE_WELL)>0;
+    return {raw,nt,c,words,th,pol,priv};
+  }).filter(it=>it.c && it.words>=3);
+
+  const pub = items.filter(i=>!i.priv);
+  const posItems = pub.filter(i=>i.pol>0);
+  const negItems = pub.filter(i=>i.pol<0 && !(/pas (\w+ )?(aborde|parle|presente|evoque|mentionne)|n'a pas (\w+ )?(parle|aborde|presente)/.test(i.nt)&&Object.values(PRODUCTS).some(p=>hits(i.nt,p.re))));
+
+  // Points forts : un par compétence d'abord, puis le reste
+  const seen=new Set(), strengths=[];
+  posItems.slice().sort((a,b)=>((b.th?TH[b.th].w:0)-(a.th?TH[a.th].w:0))).forEach(i=>{
+    if(strengths.length>=5) return;
+    const first=i.th&&!seen.has(i.th);
+    strengths.push({text:i.c, th:i.th||"", keep:first?TH[i.th].keep:""});
+    if(i.th) seen.add(i.th);
+  });
+
+  // Axes : regroupés par compétence, triés par fréquence puis importance
+  const map={}; const other=[];
+  const NOTDISC=/pas (\w+ )?(aborde|parle|presente|evoque|mentionne)|n'a pas (\w+ )?(parle|aborde|presente)/;
+  negItems.forEach(i=>{ if(NOTDISC.test(i.nt)&&Object.values(PRODUCTS).some(p=>hits(i.nt,p.re))) return; if(!i.th){other.push(i.c);return} (map[i.th]=map[i.th]||[]).push(i.c) });
+  const order=Object.keys(map).sort((a,b)=>(map[b].length-map[a].length)||(TH[b].w-TH[a].w));
+  const axes=order.slice(0,3).map(th=>{
+    const obs=map[th].join(" · "); const pa=pickAdvice(th,obs);
+    return {th, label:TH[th].label, obs, adv:pa.main.t+" → "+pa.main.d, alt:pa.alt.t+" → "+pa.alt.d};
+  });
+  order.slice(3).forEach(th=>map[th].forEach(c=>other.push(c)));
+
+  // Objections entendues
+  const allPub=pub.map(i=>i.nt).join(" . ");
+  const objs=OBJECTIONS.filter(o=>hits(allPub,o.re)).map(o=>({o:o.o,r:o.r.map(x=>"• "+x).join("\n"),pr:o.pr,st:OBJ_ST[o.id]||[]}));
+
+  // Produits & campagne
+  const detected=detectProducts(items);
+  const worked=new Set([...(ctx.products||[]),...detected]);
+  const camp=[];
+  (S.campaign.priority||[]).forEach(k=>{
+    if(PRODUCTS[k]&&PRODUCTS[k].roles.includes(member.role)&&!worked.has(k))
+      camp.push(k+" est prioritaire sur le cycle et n'a pas été abordé : à intégrer au prochain duo.");
+  });
+  pub.forEach(i=>{ if(!NOTDISC.test(i.nt)) return; Object.entries(PRODUCTS).forEach(([k,p])=>{ if(hits(i.nt,p.re)&&!(S.campaign.priority||[]).includes(k)) camp.push(k+" non abordé : à prévoir selon le potentiel du médecin."); }); });
+  // Chiffres
+  (ctx.kpis||[]).filter(x=>x.p&&x.v!==""&&!isNaN(parseFloat(x.v))).forEach(x=>{
+    const v=parseFloat(String(x.v).replace(",","."));
+    if(v<0) camp.push(x.p+" en recul ("+v+" %)"+(axes[0]?" : l'axe « "+axes[0].label+" » est le levier prioritaire sur ce produit.":" : en faire le message prioritaire des prochaines visites."));
+    else if(v>0) camp.push(x.p+" en progression (+"+v+" %)"+(strengths[0]&&strengths[0].th?" : la dynamique s'appuie sur « "+TH[strengths[0].th].label.toLowerCase()+" », à poursuivre.":" : à poursuivre."));
+  });
+
+  if(S.campaign.imported){ [...worked].forEach(k=>{ const msg=S.campaign.msgs&&S.campaign.msgs[k]; if(msg) camp.push("Message clé du cycle · "+k+" : "+msg); }); }
+  // Grille
+  const grid={};
+  GRID_THEMES.forEach(t=>{
+    const p=posItems.some(i=>i.th===t), n=negItems.some(i=>i.th===t);
+    grid[t]=p&&n?2:p?3:n?1:0;
+  });
+
+  // Synthèse
+  const ns=strengths.length, na=axes.length;
+  let headline;
+  if(!ns&&!na) headline="Compte-rendu à compléter : précisez ce qui a bien fonctionné et ce qui peut progresser.";
+  else if(!na) headline="Très belle journée : une pratique maîtrisée, à capitaliser et à partager avec l'équipe.";
+  else if(ns>=na) headline="Journée solide. Priorité : "+axes[0].label.toLowerCase()+".";
+  else headline="Journée à consolider. Priorité : "+axes[0].label.toLowerCase()+".";
+
+  let objective="";
+  if(axes[0]) objective=TH[axes[0].th].obj;
+  else if(strengths[0]) objective="Partager en réunion d'équipe une bonne pratique observée : « "+strengths[0].text+" ».";
+
+  const coachQ = axes[0]?TH[axes[0].th].q:(strengths[0]&&strengths[0].th?TH[strengths[0].th].q:"Quelle a été ta meilleure visite aujourd'hui, et pourquoi ?");
+
+  const privItems=items.filter(i=>i.priv).map(i=>i.c);
+  let priv=privItems.join("\n");
+  if(privItems.length) priv+="\n→ Prévoir un échange en tête-à-tête sur la charge et le rythme, hors compte-rendu.";
+
+  const pf=profilOf(member); let posture=pf?PROFILS[pf].l+" · "+PROFILS[pf].p:"";
+  if(pf==="expert"&&strengths[0]) posture+="\nÀ valoriser : proposer de partager « "+strengths[0].text+" » en réunion d'équipe.";
+  if(pf==="nouveau"&&axes[0]) posture+="\nMontrer l'exemple sur « "+axes[0].label.toLowerCase()+" » lors d'une visite du prochain duo.";
+  return {headline, strengths, axes, other, objs, camp, objective, coachQ, grid, priv, posture, products:[...worked]};
+}
+
+/* =========================================================
+   OUTILS UI
+   ========================================================= */
+const $=s=>document.querySelector(s);
+const h=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);
+const DEMO_M={id:"demo",name:"Délégué fictif",role:"DMS",profil:"confirme"};
+const member=id=>id==="demo"?DEMO_M:S.team.find(m=>m.id===id);
+const dr=()=>S.team.find(m=>m.role==="DR");
+const initials=n=>n.split(/[\s-]+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+const COLORS=["#8E7CF0","#EE9A7E","#5DB89E","#6FA3E0","#E38DB2","#D8A443","#7C86D9","#4FB3BF","#B38BE0"];
+const color=id=>COLORS[[...id].reduce((a,c)=>a+c.charCodeAt(0),0)%COLORS.length];
+const fmtDate=d=>{try{return new Date(d+"T12:00:00").toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})}catch(e){return d}};
+const today=()=>new Date().toISOString().slice(0,10);
+function ago(d){const n=Math.round((Date.now()-new Date(d+"T12:00:00"))/864e5);return n<=0?"aujourd'hui":n===1?"hier":n<31?"il y a "+n+" j":n<365?"il y a "+Math.round(n/30)+" mois":"il y a plus d'un an"}
+function reportsOf(id){return S.reports.filter(r=>r.memberId===id).sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:(b.created||0)-(a.created||0))}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),2400)}
+
+function monthsBetween(d,f){const [y1,m1]=d.split("-").map(Number);let y2,m2;if(f){[y2,m2]=f.split("-").map(Number)}else{const n=new Date();y2=n.getFullYear();m2=n.getMonth()+1}return Math.max(1,(y2-y1)*12+(m2-m1)+1)}
+function fmtDur(n){const y=Math.floor(n/12),mo=n%12;if(!y)return n+" mois";return y+" an"+(y>1?"s":"")+(mo?" "+mo+" mois":"")}
+const MOIS=["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+function fmtYM(s){if(!s)return "aujourd'hui";const [y,m]=s.split("-").map(Number);return MOIS[m-1]+" "+y}
+function coColor(co){const P=["#8E7CF0","#EE9A7E","#5DB89E","#6FA3E0","#E38DB2","#D8A443","#7C86D9","#4FB3BF","#B38BE0"];return /servier/i.test(co)?"#2A2B57":P[[...co].reduce((a,c)=>a+c.charCodeAt(0),0)%P.length]}
+function coIni(co){return co.replace(/\(.*?\)/g,"").split(/[\s·,'-]+/).filter(w=>w&&/[A-Za-zÀ-ÿ]/.test(w[0])).slice(0,2).map(w=>w[0]).join("").toUpperCase()}
+function vCV(m){
+  if(!m.exp||!m.exp.length) return "";
+  const ex=m.exp, maxM=Math.max(...ex.map(e=>monthsBetween(e.d,e.f)));
+  // années de visite : union des périodes v
+  const set=new Set();ex.filter(e=>e.v).forEach(e=>{const [y,mo]=e.d.split("-").map(Number);const n=monthsBetween(e.d,e.f);for(let i=0;i<n;i++)set.add((y*12+mo-1)+i)});
+  const vis=set.size, serv=ex.filter(e=>/servier/i.test(e.co)).map(e=>e.d).sort()[0];
+  const labs=m.labs!=null?m.labs:new Set(ex.filter(e=>e.v&&!/servier/i.test(e.co)).map(e=>e.co.split(/[\s(]/)[0])).size;
+  return `<h2>Parcours</h2><div class="card cvcard">
+   <div class="cvstats"><div class="cb"><b>${serv?fmtDur(monthsBetween(serv,null)):"-"}</b><span>chez Servier</span></div>
+    <div class="cg"><b>${vis?fmtDur(vis).replace(/ \d+ mois/,""):"-"}</b><span>de visite médicale</span></div>
+    <div class="ca"><b>${labs}</b><span>labo${labs>1?"s":""} avant Servier</span></div></div>
+   <div class="cvt">${ex.map(e=>{const n=monthsBetween(e.d,e.f);const sv=/servier/i.test(e.co);return `<div class="cvi${sv?" sv":""}">
+     <div class="cvlogo" style="background:${coColor(e.co)}">${h(coIni(e.co))}</div>
+     <div class="cvb"><div class="cvh"><b>${h(e.co)}</b><span class="dur${e.f?"":" now"}">${fmtDur(n)}</span></div>
+      <div class="cvp">${h(e.po)}</div>
+      <div class="cvbar"><i style="width:${Math.max(6,Math.round(n/maxM*100))}%;background:${coColor(e.co)}"></i></div>
+      <div class="cvd">${fmtYM(e.d)} → ${fmtYM(e.f)}${e.v?' · <span class="vtag">visite</span>':""}</div></div></div>`}).join("")}</div>
+   ${m.form&&m.form.length?`<div class="lbl" style="margin-top:16px">Formation</div><div class="cvf">${m.form.map(f=>`<div class="cvfi"><div class="cvfic">🎓</div><div><b>${h(f.ec)}</b><div class="cvp">${h(f.di)}</div>${f.an?`<div class="cvd">${h(f.an)}</div>`:""}</div></div>`).join("")}</div>`:`<div class="muted small" style="margin-top:12px">Formation non renseignée.</div>`}
+  </div>`;
+}
+function seniority(m){
+  if(!m.entree) return "";
+  const d=new Date(m.entree+"T12:00:00"); if(isNaN(d)) return m.entree;
+  const y=(Date.now()-d)/31557600000;
+  return y<1?Math.max(1,Math.round(y*12))+" mois":(Math.floor(y*2)/2).toString().replace(".",",")+" an"+(y>=2?"s":"");
+}
+const CIBLES={DMS:["Cardiologues libéraux","Cardiologues hospitaliers","Pharmacies","Autres spécialistes"],DMV:["Médecins généralistes","Pharmacies","Spécialistes"]};
+const ICON={
+ mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+ stop:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>',
+ team:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 19c.8-3.2 3.2-5 6-5s5.2 1.8 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.2c2.3.2 3.9 1.8 4.5 4.3"/></svg>',
+ book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
+ gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+ flag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg>',
+ lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+ org:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4M7.5 13.5l2 2 4-4"/></svg>',
+ back:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>'
+};
+
+/* =========================================================
+   ROUTAGE
+   ========================================================= */
+let skipHash=false;
+function go(hash){ if(location.hash===hash){render();return} skipHash=true; location.hash=hash; render(); }
+window.addEventListener("hashchange",()=>{ if(skipHash){skipHash=false;return} if(recOn){stopRec();closeOv()} render(); });
+function render(){
+  const [v,id]=(location.hash.slice(1)||"home").split("/");
+  const app=$("#app");
+  if(v==="m"&&member(id)) app.innerHTML=vMember(id);
+  else if(v==="new"&&member(id)) app.innerHTML=vNew(id);
+  else if(v==="r") app.innerHTML=vReport(id);
+  else if(v==="lib") app.innerHTML=vLib(id||"debrief");
+  else if(v==="set") app.innerHTML=vSettings();
+  else if(v==="org") app.innerHTML=vOrg(id||"",location.hash.split("/")[2]);
+  else if(v==="camp"&&id) app.innerHTML=vCamp(id);
+  else if(v==="camp") app.innerHTML=vSettings();
+  else app.innerHTML=vHome();
+  const tab=v==="lib"?"lib":v==="org"?"org":(v==="set"||v==="camp")?"set":"home";
+  $("#nav").innerHTML=[["home","#home","Équipe","team"],["org","#org","Enregistrement","mic"],["lib","#lib","Méthodes","book"],["set","#set","Réglages","gear"]]
+    .map(([k,href,l,ic])=>`<a href="${href}" class="${k===tab?"on":""}">${ICON[ic]}${l}</a>`).join("");
+  window.scrollTo(0,0);
+  grow();
+}
+document.addEventListener("toggle",()=>grow(),true);
+function grow(){document.querySelectorAll("textarea[data-msg],textarea[data-impmsg],textarea[data-mf],#impNotes,#cNotes").forEach(t=>{t.style.height="auto";t.style.height=(t.scrollHeight+4)+"px"})}
+
+/* =========================================================
+   VUES
+   ========================================================= */
+function vHome(){
+  const d=dr(); const reps=S.reports; const month=today().slice(0,7);
+  const nMonth=reps.filter(r=>r.date.slice(0,7)===month).length;
+  const members=S.team.filter(m=>m.role!=="DR");
+  const withObj=members.filter(m=>{const r=reportsOf(m.id)[0];return r&&r.a.objective}).length;
+  const last=reps.slice().sort((a,b)=>a.date<b.date?1:-1)[0];
+  const card=m=>{
+    const rs=reportsOf(m.id), r=rs[0];
+    return `<button class="card mcard" data-go="#m/${m.id}">
+      <div class="mrow"><div class="av" style="background:${color(m.id)}">${initials(m.name)}</div>
+        <div style="flex:1;min-width:0"><div class="mname">${h(m.name)}</div>
+        <div class="msub">${profilOf(m)?PROFILS[profilOf(m)].l+" · ":""}${r?"dernier duo "+ago(r.date):"pas encore de duo"}${rs.length?" · "+rs.length+" CR":""}</div></div>
+        <span class="pill ${m.role.toLowerCase()}">${m.role}</span></div>
+      ${r&&r.a.objective?`<div class="obj"><b>Objectif en cours ·</b> ${h(r.a.objective)}</div>`:""}
+      ${r?`<div class="dots">${GRID_THEMES.map(t=>`<span class="dot l${r.a.grid[t]||0}" title="${h(TH[t].label)}"></span>`).join("")}</div>`:""}
+    </button>`;
+  };
+  const sect=(role,title)=>{const l=members.filter(m=>m.role===role);return l.length?`<h2>${title}</h2><div class="grid">${l.map(card).join("")}</div>`:""};
+  return `<div class="top"><div class="logo">D<span>.</span></div><div><h1>Duo</h1><p>Comptes-rendus de visite duo</p></div></div>
+  <div class="hero"><h1>Bonjour${d?" "+h(d.name.split(" ")[0]):""}</h1><p>${members.length} délégués · ${S.campaign.cycle?h(S.campaign.cycle):"Dictez, relisez, partagez : le CR est prêt en quelques minutes."}</p>
+   <div class="stats"><div class="stat"><b>${nMonth}</b><span>duos ce mois</span></div><div class="stat"><b>${withObj}</b><span>objectifs en cours</span></div><div class="stat"><b>${last?h(ago(last.date)):"-"}</b><span>dernier duo</span></div></div></div>
+  <button class="btn sec full" data-go="#r/demo" style="margin-top:12px">Voir un exemple de compte-rendu</button>
+  ${sect("DMS","Délégués spécialistes · DMS")}
+  ${sect("DMV","Délégués ville · DMV")}
+  <p class="foot">Les données restent sur cet appareil</p>`;
+}
+
+function vMember(id){
+  const m=member(id), rs=reportsOf(id), last=rs[0];
+  const sen=seniority(m);
+  const tl=rs.length?`<div class="tl">${rs.map(r=>`<button class="card tli" data-go="#r/${r.id}">
+      <div class="row" style="justify-content:space-between"><b>${h(fmtDate(r.date))}</b>${r.prev?`<span class="pill ${r.prev==="atteint"?"gr":r.prev==="progres"?"am":"co"}">Objectif ${r.prev==="atteint"?"atteint":r.prev==="progres"?"en progrès":"non atteint"}</span>`:""}</div>
+      <div style="margin:4px 0 6px;font-size:14.5px">${h(r.a.headline)}</div>
+      <div class="dots">${GRID_THEMES.map(t=>`<span class="dot l${r.a.grid[t]||0}"></span>`).join("")}</div></button>`).join("")}</div>`
+    :`<div class="card empty">Aucun duo pour l'instant.<br>Dictez le premier, le suivi se construit tout seul.</div>`;
+  return `<button class="back noprint" data-go="#home">${ICON.back} Équipe</button>
+  <div class="card">
+    <div class="mrow"><div class="av lg" style="background:${color(m.id)}">${initials(m.name)}</div>
+     <div style="flex:1"><div class="mname" style="font-size:20px">${h(m.name)}</div>
+     <div class="row" style="gap:6px;margin-top:4px"><span class="pill ${m.role.toLowerCase()}">${m.role==="DMS"?"DMS · cardiologues":m.role==="DMV"?"DMV · généralistes":m.role}</span>${sen?`<span class="pill mu">${sen} d'ancienneté</span>`:""}${profilOf(m)?`<span class="pill gr">${PROFILS[profilOf(m)].l}</span>`:""}</div></div></div>
+    <details style="margin-top:12px"><summary class="muted" style="cursor:pointer;font-weight:600">Modifier la fiche : date d'entrée, secteur, profil</summary>
+     <div class="fld" style="margin-top:8px">
+      <div><div class="lbl">Date d'entrée</div><input type="date" data-mf="entree" data-id="${m.id}" value="${h(m.entree||"")}"></div>
+      <div><div class="lbl">Secteur</div><input type="text" data-mf="secteur" data-id="${m.id}" value="${h(m.secteur||"")}" placeholder="Code secteur, villes"></div></div>
+     <div class="lbl">Profil (adapte les conseils de management)</div>
+     <div class="prof">${Object.entries(PROFILS).map(([k,p])=>`<button class="chip ${m.profil===k?"on":""}" data-act="profil" data-id="${m.id}" data-v="${k}">${p.l}</button>`).join("")}</div>
+     ${!m.profil&&profilOf(m)?`<div class="muted small" style="margin-top:4px">Déduit de l'ancienneté : ${PROFILS[profilOf(m)].l.toLowerCase()}.</div>`:""}
+     ${m.exp&&m.exp.length?"":`<div class="lbl">Parcours</div>`}<textarea ${m.exp&&m.exp.length?'style="display:none"':""} data-mf="parcours" data-id="${m.id}" placeholder="Formation, postes précédents, laboratoires, aires thérapeutiques…">${h(m.parcours||"")}</textarea>
+     <div class="lbl">Points d'attention / ambitions</div><textarea data-mf="notes" data-id="${m.id}" placeholder="Souhaits d'évolution, forces reconnues, projets…">${h(m.notes||"")}</textarea>
+    </details>
+  </div>
+  ${last&&last.a.objective?`<div class="sec a"><h3>Objectif en cours</h3><div>${h(last.a.objective)}</div><div class="muted small" style="margin-top:4px">Fixé le ${h(fmtDate(last.date))}</div></div>`:""}
+  <div style="margin-top:14px"><button class="btn full" data-act="dictate" data-id="${m.id}" style="padding:16px">${ICON.mic.replace("<svg",'<svg width="22" height="22"')} Dicter un nouveau duo</button></div>
+  ${vCV(m)}
+  ${last?`<h2>Préparer le prochain duo</h2><div class="card">
+     <div class="lbl" style="margin-top:0">À observer</div>
+     <div class="chips">${(last.a.axes.length?last.a.axes:[{label:"Consolider les acquis"}]).map(a=>`<span class="pill co">${h(a.label)}</span>`).join("")}</div>
+     <div class="lbl">Question d'ouverture du débrief</div><div style="font-size:15px">« ${h(last.a.coachQ)} »</div>
+     ${profilOf(m)?`<div class="lbl">Posture conseillée · ${PROFILS[profilOf(m)].l}</div><div class="muted">${h(PROFILS[profilOf(m)].p)}</div>`:""}
+     ${m.role==="DMS"?`<div class="lbl">Repère métier DMS</div><div class="muted">Spécialistes : profondeur scientifique, études et recommandations, accès au service (staffs, internes, pharmacie hospitalière).</div>`:`<div class="lbl">Repère métier DMV</div><div class="muted">Généralistes : visite courte, un patient type, un message, une preuve ; pont dyslipidémie ↔ HTA ; Daflon.</div>`}
+    </div>`:""}
+  ${rs.length>1?`<h2>Évolution des compétences</h2><div class="card matrix">${matrix(rs)}</div>`:""}
+  <h2>Historique</h2>${tl}`;
+}
+function matrix(rs){
+  const cols=rs.slice(0,6).reverse();
+  const rows=GRID_THEMES.filter(t=>cols.some(r=>(r.a.grid[t]||0)>0));
+  if(!rows.length) return `<div class="muted">Pas encore assez d'observations.</div>`;
+  return `<table><tr><th></th>${cols.map(r=>`<th>${h(new Date(r.date+"T12:00:00").toLocaleDateString("fr-FR",{day:"numeric",month:"short"}))}</th>`).join("")}</tr>
+  ${rows.map(t=>`<tr><td>${h(TH[t].label)}</td>${cols.map(r=>`<td><span class="dot l${r.a.grid[t]||0}"></span></td>`).join("")}</tr>`).join("")}</table>
+  <div class="legend"><span><i class="dot l3"></i>Maîtrisé</span><span><i class="dot l2"></i>En progrès</span><span><i class="dot l1"></i>À travailler</span><span><i class="dot l0"></i>Non observé</span></div>`;
+}
+
+function ensureDraft(id){
+  if(!DRAFT||DRAFT.memberId!==id){
+    const m=member(id);
+    DRAFT={memberId:id,date:today(),nb:"",cibles:m.role==="DMV"?["Médecins généralistes"]:["Cardiologues libéraux"],products:[],prev:"",text:"",kpis:[]};
+    saveDraft();
+  }
+}
+function vNew(id){
+  ensureDraft(id);
+  const m=member(id), d=DRAFT, last=reportsOf(id)[0];
+  const prods=Object.keys(PRODUCTS).filter(k=>PRODUCTS[k].roles.includes(m.role));
+  return `<button class="back noprint" data-go="#m/${id}">${ICON.back} ${h(m.name)}</button>
+  <div class="top" style="margin-bottom:8px"><div class="av" style="background:${color(m.id)}">${initials(m.name)}</div><div><h1>Nouveau duo</h1><p>${h(m.name)} · ${m.role}</p></div></div>
+  ${last&&last.a.objective?`<div class="prev"><div class="tag" style="color:var(--amber)">Objectif fixé le ${h(fmtDate(last.date))}</div><div style="margin:4px 0 10px">${h(last.a.objective)}</div>
+    <div class="chips">${[["atteint","Atteint"],["progres","En progrès"],["pas","Pas encore"]].map(([k,l])=>`<button class="chip ${d.prev===k?"on":""}" data-act="prev" data-v="${k}">${l}</button>`).join("")}</div></div>`:""}
+  <div class="card" style="margin-top:12px">
+   <div class="mic-zone">
+    <button class="mic" id="micBtn" data-act="mic" aria-label="Dicter">${ICON.mic}</button>
+    <div class="mic-hint" id="micHint">Touchez le micro et racontez la journée. Dictée plein écran, mains libres : dites « terminé » pour arrêter ou « génère le compte-rendu ».</div>
+   </div>
+   <textarea class="dict" id="dict" placeholder="Votre dictée apparaît ici. Vous pouvez aussi écrire ou utiliser le micro du clavier.">${h(d.text)}</textarea>
+   <div class="row" style="justify-content:space-between;margin-top:6px"><button class="btn ghost sm" data-act="sample">Essayer avec un exemple</button><button class="btn ghost sm" data-act="cleartext">Effacer</button></div>
+  </div>
+  <div class="card" style="margin-top:12px">
+   <div class="fld"><div><div class="lbl" style="margin-top:0">Date</div><input type="date" id="fDate" value="${h(d.date)}"></div>
+   <div><div class="lbl" style="margin-top:0">Nombre de visites</div><input type="number" inputmode="numeric" min="0" id="fNb" value="${h(d.nb)}" placeholder="ex. 7"></div></div>
+   <div class="lbl">Cibles</div><div class="chips">${CIBLES[m.role==="DMV"?"DMV":"DMS"].map(c=>`<button class="chip ${d.cibles.includes(c)?"on":""}" data-act="cible" data-v="${h(c)}">${h(c)}</button>`).join("")}</div>
+   <div class="lbl">Produits travaillés</div><div class="chips">${prods.map(p=>`<button class="chip ${d.products.includes(p)?"on":""}" data-act="prod" data-v="${p}">${p}${(S.campaign.priority||[]).includes(p)?" ★":""}</button>`).join("")}</div>
+   <details style="margin-top:14px"><summary class="muted" style="cursor:pointer;font-weight:600">Chiffres du secteur (facultatif)</summary>
+    <div class="muted small" style="margin:6px 0">Évolution en % (ventes ou part de marché) : l'outil relie les conseils aux chiffres.</div>
+    <div id="kpis">${(d.kpis.length?d.kpis:[{p:"",v:""}]).map((k,i)=>kpiRow(k,i,prods)).join("")}</div>
+    <button class="btn ghost sm" data-act="addkpi">+ Ajouter un produit</button>
+   </details>
+  </div>
+  <div style="margin-top:14px"><button class="btn full amb" data-act="generate" style="padding:16px">Générer le compte-rendu</button></div>`;
+}
+function kpiRow(k,i,prods){return `<div class="kpi"><select data-kpi="p" data-i="${i}"><option value="">Produit</option>${prods.map(p=>`<option ${k.p===p?"selected":""}>${p}</option>`).join("")}</select><input type="text" inputmode="decimal" data-kpi="v" data-i="${i}" value="${h(k.v)}" placeholder="ex. -4 ou +6"><button class="x" data-act="delkpi" data-i="${i}">×</button></div>`}
+
+let DEMO=null;
+function getRep(id){
+  if(id==="demo"){ if(!DEMO){const k=[{p:"TRIPLIXAM",v:"-3"}];DEMO={id:"demo",memberId:"demo",date:today(),nb:"7",cibles:["Cardiologues libéraux","Cardiologues hospitaliers"],prev:"progres",text:SAMPLE,kpis:k,a:analyse(SAMPLE,DEMO_M,{products:["TRIPLIXAM"],kpis:k})}} return DEMO }
+  return id==="draft"?(DRAFT&&DRAFT.rep):S.reports.find(r=>r.id===id)}
+function ce(path,txt,cls,tag){tag=tag||"div";return `<${tag} contenteditable="true" data-p="${path}" class="${cls||""}">${h(txt)}</${tag}>`}
+function ensureSel(a){
+  const sl=a.sel=a.sel||{};
+  const fill=(k,arr,def)=>{sl[k]=sl[k]||[];arr.forEach((_,i)=>{if(!sl[k][i])sl[k][i]=Object.assign({},def)});sl[k].length=arr.length};
+  fill("strengths",a.strengths,{on:true,keep:false});
+  fill("axes",a.axes,{on:true,obs:false,adv:true,alt:false});
+  fill("other",a.other||[],{on:false});
+  fill("objs",a.objs,{on:false});
+  fill("camp",a.camp,{on:true}); a.camp.forEach((c,i)=>{ if(/^Message clé du cycle/.test(c)&&!sl.camp[i].touched) sl.camp[i].on=false; });
+  if(sl.objective===undefined)sl.objective=true;
+  if(sl.grid===undefined)sl.grid=false;
+  if(sl.prev===undefined)sl.prev=true;
+  return sl;
+}
+const CK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+function ck(path,on,sm){return `<button class="ck${sm?" sm":""}${on?" on":""}" data-act="tog" data-k="${path}" aria-label="Inclure">${CK}</button>`}
+function selCount(a){const sl=a.sel;let n=0;["strengths","axes","other","objs","camp"].forEach(k=>sl[k].forEach(x=>{if(x.on)n++}));if(sl.objective)n++;if(sl.grid)n++;return n}
+function vReport(id){
+  const r=getRep(id); if(!r) return `<div class="empty">Compte-rendu introuvable.</div><button class="btn sec full" data-go="#home">Retour</button>`;
+  const a=r.a; ensureSel(a);
+  if(!r.mode) r.mode=(id==="draft"||id==="demo")?"select":"final";
+  return r.mode==="select"?vSelect(id,r):vFinal(id,r);
+}
+function repHead(r,m,meta,editable){
+  return `<div class="card">
+   <div class="rhead"><div class="av" style="background:${color(m.id)}">${initials(m.name)}</div><div style="flex:1">
+    <div class="mname">${h(m.name)} <span class="pill ${String(m.role).toLowerCase()}" style="vertical-align:2px">${h(m.role)}</span></div>
+    <div class="meta">Visite duo du ${h(fmtDate(r.date))}${meta?" · "+h(meta):""}</div></div></div>
+   ${editable?ce("headline",r.a.headline,"headline"):`<div class="headline">${h(r.a.headline)}</div>`}
+   ${r.prev&&(editable||r.a.sel.prev)?`<div class="row" style="gap:8px;margin-top:6px">${editable?ck("prev",r.a.sel.prev,1):""}<span class="pill ${r.prev==="atteint"?"gr":r.prev==="progres"?"am":"co"}">Objectif précédent : ${r.prev==="atteint"?"atteint":r.prev==="progres"?"en progrès":"pas encore atteint"}</span></div>`:""}
+  </div>`;
+}
+function vSelect(id,r){
+  const m=member(r.memberId)||{name:"(délégué supprimé)",id:"x",role:""}; const a=r.a, sl=a.sel; const draft=id==="draft", demo=id==="demo";
+  const meta=[r.nb?r.nb+" visites":"",(a.products||[]).join(", ")].filter(Boolean).join(" · ");
+  const cnt=(k)=>`<span class="cnt">${sl[k].filter(x=>x.on).length}/${sl[k].length}</span>`;
+  return `<button class="back noprint" data-go="${demo?"#home":draft?"#new/"+r.memberId:"#m/"+r.memberId}">${ICON.back} ${demo?"Équipe":draft?"Modifier la dictée":h(m.name)}</button>
+  ${demo?`<div class="demo-b noprint"><b>Exemple fictif.</b> Cochez ce qui doit apparaître dans le compte-rendu envoyé au délégué, puis « Créer le compte-rendu ». Rien n'est enregistré.</div>
+   <details class="card noprint" style="margin-bottom:12px"><summary class="muted" style="cursor:pointer;font-weight:600">Lire la dictée de l'exemple</summary><p style="font-size:14px;font-style:italic">${h(r.text)}</p></details>`:""}
+  <div class="stepper noprint"><span class="on">1 · Sélection</span><i></i><span>2 · Compte-rendu</span></div>
+  ${repHead(r,m,meta,true)}
+  <div class="muted small" style="margin:10px 4px 0">Cochez ce qui part au délégué. Le reste reste entre vous. Touchez un texte pour le reformuler.</div>
+
+  <div class="sec g"><h3>Acquis à conserver ${cnt("strengths")}</h3>
+   ${a.strengths.length?a.strengths.map((x,i)=>{const q=sl.strengths[i];return `<div class="si${q.on?"":" off"}">${ck("strengths."+i+".on",q.on)}<div class="tx">${x.th?`<div class="tag">${h(TH[x.th].label)}</div>`:""}${ce("strengths."+i+".text",x.text)}
+     ${x.keep?`<div class="sr${q.keep?"":" off"}">${ck("strengths."+i+".keep",q.keep,1)}${ce("strengths."+i+".keep",x.keep,"keep")}</div>`:""}</div></div>`}).join(""):`<div class="muted">Aucun acquis détecté.</div>`}
+   <button class="btn ghost sm" data-act="add" data-p="strengths">+ Ajouter un acquis</button></div>
+
+  <div class="sec c"><h3>Axes de progrès ${cnt("axes")}</h3>
+   ${a.axes.length?a.axes.map((x,i)=>{const q=sl.axes[i];return `<div class="axis${q.on?"":" off"}"><div class="si" style="padding:0">${ck("axes."+i+".on",q.on)}<div class="tx"><span class="n">${i+1}</span><span class="t">${h(x.label)}</span></div></div>
+     <div class="subs">
+      ${x.obs?`<div class="sr${q.obs?"":" off"}">${ck("axes."+i+".obs",q.obs,1)}<div><div class="tag">Observé</div>${ce("axes."+i+".obs",x.obs,"o")}</div></div>`:""}
+      <div class="sr${q.adv?"":" off"}">${ck("axes."+i+".adv",q.adv,1)}<div><div class="tag">Conseil</div>${ce("axes."+i+".adv",x.adv)}</div></div>
+      ${x.alt?`<div class="sr${q.alt?"":" off"}">${ck("axes."+i+".alt",q.alt,1)}<div><div class="tag">Autre piste</div>${ce("axes."+i+".alt",x.alt)}</div></div>`:""}
+     </div></div>`}).join(""):`<div class="muted">Aucun axe détecté.</div>`}
+   ${a.other&&a.other.length?`<div class="tag" style="color:var(--coral);margin-top:10px">Autres remarques</div>${a.other.map((o,i)=>`<div class="si${sl.other[i].on?"":" off"}">${ck("other."+i+".on",sl.other[i].on)}<div class="tx">${ce("other."+i,o)}</div></div>`).join("")}`:""}
+   <div style="margin-top:8px"><select id="addAxis"><option value="">+ Ajouter un axe de progrès…</option>${THEMES.map(t=>`<option value="${t.id}">${h(t.label)}</option>`).join("")}</select></div></div>
+
+  ${a.objs.length?`<div class="sec b"><h3>Objections entendues ${cnt("objs")}</h3>${a.objs.map((o,i)=>`<div class="si${sl.objs[i].on?"":" off"}">${ck("objs."+i+".on",sl.objs[i].on)}<div class="tx"><div class="q" style="font-weight:700;font-size:14px">${h(o.o)}</div>${ce("objs."+i+".r",o.r,"r")}<div class="pr muted small">${h(o.pr)}</div><div class="noclick">${stBtns(o.st)}</div></div></div>`).join("")}</div>`:""}
+
+  ${a.camp.length?`<div class="sec y"><h3>Campagne & chiffres ${cnt("camp")}</h3>${a.camp.map((c,i)=>`<div class="si${sl.camp[i].on?"":" off"}">${ck("camp."+i+".on",sl.camp[i].on)}<div class="tx">${ce("camp."+i,c)}</div></div>`).join("")}</div>`:""}
+
+  <div class="sec a"><div class="si${sl.objective?"":" off"}" style="padding:0">${ck("objective",sl.objective)}<div class="tx"><h3 style="margin-bottom:4px">Objectif pour le prochain duo</h3>${ce("objective",a.objective||"Définir l'objectif avec le délégué.")}</div></div></div>
+
+  <div class="sec w"><div class="si${sl.grid?"":" off"}" style="padding:0 0 8px">${ck("grid",sl.grid)}<div class="tx"><h3 style="margin:0">Grille de compétences</h3><div class="muted small">Touchez une compétence pour ajuster le niveau.</div></div></div>
+   <div class="gridc">${GRID_THEMES.map(t=>`<button class="gc" data-act="grid" data-t="${t}"><span class="dot l${a.grid[t]||0}"></span><span>${h(TH[t].label)}<small>${LEVELS[a.grid[t]||0]}</small></span></button>`).join("")}</div></div>
+
+  <div class="sec p noprint"><h3>Pour le débrief · privé, jamais envoyé</h3>
+   ${a.posture?`<div class="tag" style="opacity:.6">Posture conseillée</div><div style="white-space:pre-wrap;margin-bottom:10px">${h(a.posture)}</div>`:""}
+   <div class="tag" style="opacity:.6">Question d'ouverture</div>${ce("coachQ",a.coachQ)}
+   <div class="tag" style="opacity:.6;margin-top:10px">Note privée</div>${ce("priv",a.priv||"")}${!a.priv?`<div class="small" style="opacity:.5">Touchez ci-dessus pour ajouter une note.</div>`:""}</div>
+
+  <div class="selbar noprint"><button class="btn amb full" data-act="mode" data-v="final" id="selBtn">Créer le compte-rendu · ${selCount(a)} éléments</button></div>
+  ${draft?`<button class="btn danger full noprint" data-act="discard" style="margin-top:10px">Abandonner</button>`:""}`;
+}
+function vFinal(id,r){
+  const m=member(r.memberId)||{name:"(délégué supprimé)",id:"x",role:""}; const a=r.a, sl=a.sel; const draft=id==="draft", demo=id==="demo";
+  const meta=[r.nb?r.nb+" visites":"",(a.products||[]).join(", ")].filter(Boolean).join(" · ");
+  const S_=a.strengths.map((x,i)=>[x,sl.strengths[i]]).filter(([,q])=>q.on);
+  const A_=a.axes.map((x,i)=>[x,sl.axes[i]]).filter(([,q])=>q.on);
+  const O_=(a.other||[]).filter((x,i)=>sl.other[i].on);
+  const OB=a.objs.filter((x,i)=>sl.objs[i].on), C_=a.camp.filter((x,i)=>sl.camp[i].on);
+  const G=GRID_THEMES.filter(t=>(a.grid[t]||0)>0);
+  return `<button class="back noprint" data-go="${demo?"#home":draft?"#new/"+r.memberId:"#m/"+r.memberId}">${ICON.back} ${demo?"Équipe":draft?"Modifier la dictée":h(m.name)}</button>
+  ${demo?`<div class="demo-b noprint"><b>Exemple fictif.</b> Voici le compte-rendu sur mesure, tel que le délégué le recevra.</div>`:""}
+  <div class="stepper noprint"><span>1 · Sélection</span><i></i><span class="on">2 · Compte-rendu</span></div>
+  ${repHead(r,m,meta,false)}
+  ${S_.length?`<div class="sec g"><h3>✓ Acquis à conserver</h3>${S_.map(([x,q])=>`<div class="it"><div class="tx">${h(x.text)}${q.keep&&x.keep?`<div class="keep">${h(x.keep)}</div>`:""}</div></div>`).join("")}</div>`:""}
+  ${A_.length||O_.length?`<div class="sec c"><h3>Axes de progrès</h3>${A_.map(([x,q],i)=>`<div class="axis"><div><span class="n">${i+1}</span><span class="t">${h(x.label)}</span></div>
+    ${q.obs&&x.obs?`<div class="o">${h(x.obs)}</div>`:""}${q.adv?`<div class="adv"><b>Conseil</b> · ${h(x.adv)}</div>`:""}${q.alt&&x.alt?`<div class="adv"><b>Autre piste</b> · ${h(x.alt)}</div>`:""}</div>`).join("")}
+    ${O_.map(o=>`<div class="it"><div class="tx">${h(o)}</div></div>`).join("")}</div>`:""}
+  ${OB.length?`<div class="sec b"><h3>Objections · réponses de l'argumentaire</h3>${OB.map(o=>`<div class="ob"><div class="q">${h(o.o)}</div><div class="r">${h(o.r)}</div><div class="pr">${h(o.pr)}</div>${stBtns(o.st)}</div>`).join("")}</div>`:""}
+  ${C_.length?`<div class="sec y"><h3>Campagne & chiffres</h3>${C_.map(c=>`<div class="it"><div class="tx">${h(c)}</div></div>`).join("")}</div>`:""}
+  ${sl.objective&&a.objective?`<div class="sec a"><h3>Objectif pour le prochain duo</h3><div>${h(a.objective)}</div></div>`:""}
+  ${sl.grid&&G.length?`<div class="sec w"><h3>Compétences observées</h3><div class="gridc">${G.map(t=>`<div class="gc"><span class="dot l${a.grid[t]}"></span><span>${h(TH[t].label)}<small>${LEVELS[a.grid[t]]}</small></span></div>`).join("")}</div></div>`:""}
+  ${dr()?`<div class="muted small" style="margin:14px 4px 0">${h(dr().name)}, Directrice régionale</div>`:""}
+  <div class="actions noprint">
+   ${draft?`<button class="btn" data-act="saveRep" style="grid-column:1/-1;padding:15px">Enregistrer le compte-rendu</button>`:""}
+   <button class="btn sec" data-act="copy">Copier</button>
+   <button class="btn sec" data-act="mail">Envoyer par mail</button>
+   <button class="btn sec" data-act="print" style="flex-direction:column;gap:2px">PDF<small style="font-weight:500;opacity:.75">mise en page respectée</small></button>
+   <button class="btn sec" data-act="word" style="flex-direction:column;gap:2px">Word<small style="font-weight:500;opacity:.75">modifiable · mise en page approximative</small></button>
+   <p class="muted small" style="grid-column:1/-1;margin:2px 4px 0">PDF : la trame exacte, prête à envoyer. Word : pour changer quelques mots, mais la mise en page peut bouger selon l'appareil.</p>
+   <button class="btn sec" data-act="mode" data-v="select">Modifier la sélection</button>
+   ${!draft&&!demo?`<button class="btn danger" data-act="delRep" style="grid-column:1/-1">Supprimer</button>`:""}
+  </div>
+  ${!draft&&!demo?`<details class="card noprint" style="margin-top:14px"><summary class="muted" style="cursor:pointer;font-weight:600">Dictée d'origine et notes privées</summary><p style="white-space:pre-wrap;font-size:14px">${h(r.text)}</p>${a.priv?`<p style="white-space:pre-wrap;font-size:14px"><b>Note privée :</b> ${h(a.priv)}</p>`:""}</details>`:""}`;
+}
+
+/* ---------- BIBLIOTHÈQUE (visuelle) ---------- */
+const DEBRIEF=[
+ ["Auto-évaluation","Le délégué parle en premier : il identifie souvent lui-même l'axe de progrès, et y adhère davantage.","Comment as-tu vécu la journée ? Quelle a été ta meilleure visite ?","#6FA3E0"],
+ ["Reconnaître","Un ou deux acquis, décrits précisément : situation, comportement, impact.","Chez le Dr B., ta question sur ses diabétiques l'a fait parler trois minutes.","#45B58C"],
+ ["Un axe prioritaire","Des faits observés, sans jugement de personne. Au-delà de deux axes, rien n'est retenu.","Sur sept visites, l'engagement a été demandé une fois.","#E38DB2"],
+ ["Co-construire","Le délégué propose, le DR complète avec un conseil de la fiche.","Que pourrais-tu faire différemment au prochain duo ?","#F2B06E"],
+ ["S'engager","Un objectif mesurable, formulé par le délégué, vérifié en ouverture du duo suivant.","Qu'est-ce qu'on vérifie ensemble la prochaine fois ?","#8E7CF0"]
+];
+const COMPLIANCE=[
+ ["Le cadre","Charte de l'information promotionnelle (CEPS-LEEM, octobre 2014) et référentiel de certification HAS : face à face comme à distance."],
+ ["Le message","Conforme à l'AMM, aux avis HAS et aux supports validés. Hors AMM : demande d'information médicale."],
+ ["Les documents","Remettre les documents prévus par la charte et les procédures (RCP, avis de la CT…)."],
+ ["Avantages & échantillons","Règles de la charte et procédures internes. En cas de doute : ne rien proposer, vérifier."],
+ ["Pharmacovigilance","Tout effet indésirable rapporté en visite est transmis selon la procédure interne."],
+ ["Organisation","Règles d'accès des établissements, modalités de rendez-vous du médecin ou du service."]
+];
+function vLib(tab){
+  const tabs=[["debrief","Débrief"],["tech","Visite"],["prod","Argumentaires"]];
+  let body="";
+  if(tab==="debrief") body=`<div class="vcard"><h4>Le débrief en 10 minutes</h4><div class="sub">À faire avant de partager le compte-rendu</div>
+     <div class="tbar">${DEBRIEF.map(d=>`<i style="background:${d[3]}"></i>`).join("")}</div><div class="tleg"><span>0 min</span><span>5 min</span><span>10 min</span></div></div>
+    ${DEBRIEF.map((d,i)=>`<div class="dstep"><div class="n" style="background:${d[3]}">${i+1}</div><div style="flex:1"><div class="tt">${d[0]}<span>2 min</span></div><p>${d[1]}</p><div class="quote">« ${d[2]} »</div></div></div>`).join("")}`;
+  if(tab==="tech") body=`
+    <div class="vcard"><h4>La structure de visite</h4><div class="sub">En foncé : ce qui fait la prescription, à observer en priorité</div>
+     <div class="flow">${["Préparer","Ouvrir","Découvrir","Argumenter","Objections","Conclure","Suivre"].map((x,i)=>(i?"<em>›</em>":"")+`<span class="${x==="Découvrir"||x==="Conclure"?"hot":""}">${x}</span>`).join("")}</div></div>
+    <div class="vcard"><h4>Le questionnement en entonnoir</h4>
+     <div class="funnel"><div style="width:100%;background:#B3A6F5"><b>Ouvertes</b>« Comment prenez-vous en charge vos hypertendus ? »</div>
+     <div style="width:86%;background:#8E7CF0"><b>Quantification</b>« Sur 10 sous bithérapie, combien à la cible ? »</div>
+     <div style="width:72%;background:#6C5DD3"><b>Validation</b>« Êtes-vous d'accord que… ? »</div></div></div>
+    <div class="vcard"><h4>CAP : chaque argument en 3 temps</h4>
+     <div class="tri"><div class="cb"><div class="k">Caractéristique</div>3 molécules en une prise</div><div class="ca"><div class="k">Avantage</div>Patient contrôlé et observant</div><div class="cg"><div class="k">Preuve</div>Snyman : 59,9 % vs 26,9 % d'observants</div></div></div>
+    <div class="vcard"><h4>Traiter une objection</h4>
+     <div class="cycle"><div class="cb"><b>1</b>Creuser<br><small>« Chez quel profil ? »</small></div><div class="ca"><b>2</b>Reformuler<br><small>« Si je comprends bien… »</small></div><div class="cc"><b>3</b>Répondre<br><small>un fait sourcé</small></div><div class="cg"><b>4</b>Vérifier<br><small>« Cela vous répond ? »</small></div></div></div>
+    <div class="vcard"><h4>Adapter au profil du médecin</h4>
+     <div class="m2"><div class="cb"><div class="k">Analytique</div>Données, études, sources précises.</div><div class="cc"><div class="k">Pragmatique</div>L'essentiel, le bénéfice patient, peu de temps.</div><div class="cg"><div class="k">Relationnel</div>Écoute, cas patients, continuité.</div><div class="ca"><div class="k">Expressif</div>Échanges d'idées, projets, staffs.</div></div></div>
+    <h2>Conseils par compétence</h2>`+THEMES.map(t=>`<details><summary>${h(t.label)}</summary><ul>${t.adv.map(a=>`<li><b>${h(a.t)}.</b> ${h(a.d)}</li>`).join("")}</ul><div class="quote">« ${h(t.q)} »</div></details>`).join("");
+  if(tab==="prod") body=`${S.campaign.notes?`<div class="sec a"><h3>Priorités du cycle${S.campaign.cycle?" · "+h(S.campaign.cycle):""}</h3><div style="white-space:pre-wrap">${h(S.campaign.notes)}</div></div>`:""}
+   ${Object.entries(PRODUCTS).map(([k,p])=>`<div class="vcard prod"><h4>${k}${(S.campaign.priority||[]).includes(k)?' <span class="pill am">Prioritaire</span>':""}</h4><div class="cls">${h(p.cls)} · ${p.roles.join(", ")}</div>
+     ${p.figs?`<div class="figs">${p.figs.map(f=>`<div class="fig"><b>${h(f[0])}</b><span>${h(f[1])}</span></div>`).join("")}</div>`:""}
+     <div class="m">${h(productMsg(k))}</div>
+     ${PROD_ST[k]?`<div class="tag" style="opacity:.6;margin-top:4px">Les études</div>${stBtns(PROD_ST[k])}`:""}
+     ${OBJECTIONS.filter(o=>[].concat(o.p||[]).includes(k)).length?`<details style="border:0;padding:0;margin:0"><summary class="muted" style="font-size:13.5px">${OBJECTIONS.filter(o=>[].concat(o.p||[]).includes(k)).length} objections et réponses</summary>${OBJECTIONS.filter(o=>[].concat(o.p||[]).includes(k)).map(o=>`${objCard(o)}`).join("")}</details>`:""}</div>`).join("")}
+   <h2>Toutes les objections · RAO</h2>${["HTA","DYS"].map(g=>`<div class="tag" style="margin:12px 2px 0;color:var(--lavD)">${g==="HTA"?"Hypertension artérielle":"Dyslipidémie"}</div>${OBJECTIONS.filter(o=>o.g===g).map(o=>`<details class="objd"><summary>${h(o.o)}</summary>${objCard(o,true)}</details>`).join("")}`).join("")}
+   <h2>Références des études</h2><div class="vcard">${Object.values(STUDIES).map(x=>`<div class="refl"><div><b>${h(x.n)}</b><div class="muted small">${h(x.ref)}</div></div><a class="stb" href="${x.url}" target="_blank" rel="noopener">Ouvrir ${DOCI}</a></div>`).join("")}</div>
+   <p class="muted small" style="margin-top:12px">Contenus issus de l'argumentaire interne, à valider avec les supports promotionnels du cycle. Messages modifiables dans Réglages, rubrique Campagne. Liens vers PubMed, l'éditeur ou la HAS.</p>`;
+  return `<div class="top"><div class="logo">D<span>.</span></div><div><h1>Méthodes</h1><p>Débrief, visite, argumentaires</p></div></div>
+  <div class="seg">${tabs.map(([k,l])=>`<button class="${k===tab?"on":""}" data-go="#lib/${k}">${l}</button>`).join("")}</div><div class="lib" style="margin-top:12px">${body}</div>`;
+}
+
+
+/* ---------- CAMPAGNE ---------- */
+let IMP=null;
+const CAMP_EX=`Plan de cycle 1 · 2027
+Priorités du cycle : TRIPLIXAM et LIPOROSA
+
+TRIPLIXAM
+- Contrôle tensionnel et observance en une seule prise, dès le premier dosage.
+- Cible : hypertendus non contrôlés sous bithérapie.
+
+LIPOROSA
+- Atteindre la cible de LDL-c en une gélule chez le patient à très haut risque.
+
+COVERAM
+- Maintenir la prescription chez le coronarien stable hypertendu.
+
+Objectif régional : deux staffs par délégué sur le cycle.`;
+function parseCampaign(txt){
+  const lines=txt.replace(/\r/g,"").split("\n").map(l=>l.trim()).filter(Boolean);
+  const out={cycle:"",prods:{},notes:[]}; let cur=null;
+  const prodsIn=nt=>Object.keys(PRODUCTS).filter(k=>hits(nt,PRODUCTS[k].re));
+  lines.forEach((l,idx)=>{
+    const nt=norm(l), ps=prodsIn(nt), clean=l.replace(/^[-•*·-\d.)\s]+/,"").replace(/^(message cl[ée]|messages cl[ée]s|cl[ée]|argument)\s*:\s*/i,"");
+    if(!out.cycle&&/(cycle|campagne|vague|plan de)/.test(nt)&&l.split(/\s+/).length<=10&&!ps.length){out.cycle=clean;return}
+    if(/(prioritaire|priorite|priorites|focus)/.test(nt)&&ps.length){ps.forEach(k=>{(out.prods[k]=out.prods[k]||{msg:[],prio:false}).prio=true});return}
+    if(ps.length===1&&l.split(/\s+/).length<=4){cur=ps[0];out.prods[cur]=out.prods[cur]||{msg:[],prio:false};return}
+    if(ps.length===1&&!/^[-•*·-]/.test(l)){cur=ps[0];const p=out.prods[cur]=out.prods[cur]||{msg:[],prio:false};const rest=clean.replace(new RegExp("^\\s*"+cur+"\\s*[:·--]\\s*","i"),"");if(rest&&rest.length>3)p.msg.push(rest);return}
+    if(cur&&/^[-•*·-]/.test(l)){out.prods[cur].msg.push(clean);return}
+    cur=null; out.notes.push(clean);
+  });
+  Object.values(out.prods).forEach(p=>p.msg=p.msg.join(" "));
+  return out;
+}
+function vCamp(sub){
+  const c=S.campaign;
+  if(sub==="import"){
+    return `<button class="back noprint" data-go="#set">${ICON.back} Réglages</button>
+    <div class="top"><div class="logo">D</div><div><h1>Nouvelle campagne</h1><p>Étape 1 · le contenu</p></div></div>
+    <div class="card"><div class="lbl" style="margin-top:0">Collez le plan de cycle</div>
+     <textarea id="impTxt" style="min-height:240px" placeholder="Collez ici le texte de la campagne : mail du marketing, plan de cycle, messages clés par produit…">${h(IMP&&IMP.raw||"")}</textarea>
+     <div class="row" style="justify-content:space-between;margin-top:8px"><button class="btn ghost sm" data-act="impFile">Importer un fichier texte</button><button class="btn ghost sm" data-act="impEx">Voir un exemple</button></div>
+     <input type="file" id="impFileIn" accept=".txt,.md,.csv,.json,text/plain" style="display:none">
+     <p class="muted small">Duo repère le nom du cycle, les produits prioritaires et les messages clés de chaque produit. Vous vérifiez tout à l'étape suivante.</p></div>
+    <div style="margin-top:14px"><button class="btn full amb" data-act="impParse" style="padding:16px">Analyser la campagne</button></div>`;
+  }
+  if(sub==="preview"&&IMP&&IMP.p){
+    const p=IMP.p, keys=Object.keys(PRODUCTS);
+    return `<button class="back noprint" data-go="#camp/import">${ICON.back} Modifier le texte</button>
+    <div class="top"><div class="logo">D</div><div><h1>Nouvelle campagne</h1><p>Étape 2 · vérifiez et validez</p></div></div>
+    <div class="card"><div class="lbl" style="margin-top:0">Nom du cycle</div><input type="text" id="impCycle" value="${h(p.cycle)}" placeholder="ex. Cycle 1 · 2027"></div>
+    <h2>Messages clés détectés</h2>
+    ${keys.filter(k=>p.prods[k]).map(k=>`<div class="vcard"><div class="row" style="justify-content:space-between"><h4 style="margin:0">${k}</h4><button class="chip ${p.prods[k].prio?"on":""}" data-act="impPrio" data-v="${k}">★ Prioritaire</button></div>
+      <textarea data-impmsg="${k}" style="margin-top:8px;min-height:70px" placeholder="Message clé du cycle">${h(p.prods[k].msg)}</textarea></div>`).join("")||`<div class="card muted">Aucun produit détecté : vérifiez que les noms des produits figurent dans le texte.</div>`}
+    <div class="row" style="margin-top:8px">${keys.filter(k=>!p.prods[k]).map(k=>`<button class="chip" data-act="impAdd" data-v="${k}">+ ${k}</button>`).join("")}</div>
+    <h2>Autres consignes du cycle</h2><div class="card"><textarea id="impNotes" style="min-height:90px">${h(p.notes.join("\n"))}</textarea></div>
+    <div style="margin-top:14px"><button class="btn full amb" data-act="impSave" style="padding:16px">Valider la nouvelle campagne</button></div>
+    <p class="muted small" style="margin-top:8px">La campagne actuelle sera archivée et restaurable.</p>`;
+  }
+  return vSettings();
+}
+function campBlock(){
+  const c=S.campaign, keys=Object.keys(PRODUCTS);
+  return `<h2>Campagne</h2>
+  <div class="hero"><div class="tag" style="color:var(--lavD)">Campagne en cours</div><h1 style="margin-top:4px">${h(c.cycle||"Aucun cycle défini")}</h1>
+   <p>${c.importedAt?"Importée le "+h(fmtDate(c.importedAt)):"Messages de l'argumentaire par défaut"}</p>
+   <div class="chips" style="margin-top:12px">${(c.priority||[]).map(k=>`<span class="pill" style="background:#fff;color:var(--lavD)">★ ${k}</span>`).join("")}</div></div>
+  <button class="btn full amb" data-go="#camp/import" style="margin-top:12px;padding:16px">Importer une nouvelle campagne</button>
+  ${c.notes?`<div class="sec y"><h3>Consignes du cycle</h3><div style="white-space:pre-wrap">${h(c.notes)}</div></div>`:""}
+  <details class="card" style="margin-top:12px"><summary style="cursor:pointer;font-weight:700;font-size:16px">Messages clés par produit <span class="muted small" style="font-weight:500">· ${keys.length} produits</span></summary>
+  ${keys.map(k=>`<div class="vcard"><div class="row" style="justify-content:space-between"><h4 style="margin:0">${k}</h4><button class="chip ${(c.priority||[]).includes(k)?"on":""}" data-act="prio" data-v="${k}">★ Prioritaire</button></div>
+    <div class="muted small" style="margin:2px 0 8px">${h(PRODUCTS[k].cls)}</div><textarea data-msg="${k}" style="min-height:64px">${h(productMsg(k))}</textarea></div>`).join("")}</details>
+  <div class="card" style="margin-top:12px"><div class="lbl" style="margin-top:0">Consignes du cycle</div><textarea id="cNotes" placeholder="Objectifs régionaux, rappels…">${h(c.notes)}</textarea>
+   <div class="lbl">Nom du cycle</div><input type="text" id="cCycle" value="${h(c.cycle)}"></div>
+  ${(c.history||[]).length?`<h2>Campagnes précédentes</h2>${c.history.map((x,i)=>`<div class="vcard row" style="justify-content:space-between"><div><b>${h(x.cycle||"Sans nom")}</b><div class="muted small">${x.importedAt?"Importée le "+h(fmtDate(x.importedAt)):""}</div></div><button class="btn sec sm" data-act="campRestore" data-i="${i}">Restaurer</button></div>`).join("")}`:""}
+  <p class="muted small" style="margin-top:12px">Les messages clés du cycle sont proposés dans chaque compte-rendu (case à cocher), pour les produits travaillés.</p>`;
+}
+
+
+/* ---------- ORGANISATION ---------- */
+const SHORT={prep:"Préparation",ouverture:"Ouverture",decouverte:"Découverte",ecoute:"Écoute",argu:"Argumentation",supports:"Supports",objections:"Objections",closing:"Conclusion",relation:"Relation",temps:"Gestion du temps",science:"Scientifique",compliance:"Conformité"};
+const OV_MIN=3;
+function lastGrid(id){const rs=reportsOf(id);const g={};GRID_THEMES.forEach(t=>{const r=rs.find(x=>x.a&&x.a.grid&&(x.a.grid[t]||0)>0);g[t]=r?r.a.grid[t]:0});return g}
+function prepData(id){
+  const rs=reportsOf(id), last=rs[0]; if(!last) return null; const a=last.a, sl=ensureSel(a);
+  const axes=a.axes.filter((x,i)=>sl.axes[i].on).map(x=>x.label);
+  const g=lastGrid(id); const watch=GRID_THEMES.filter(t=>g[t]===1||g[t]===2).sort((x,y)=>g[x]-g[y]);
+  const strong=GRID_THEMES.filter(t=>g[t]===3);
+  const objs=[...new Set(rs.slice(0,3).flatMap(r=>(r.a.objs||[]).map(o=>String(o.o).replace(/^[«"\s]+|[»"\s]+$/g,""))))];
+  return {last,n:rs.length,objective:a.objective||"",axes,watch,g,strong,objs,q:a.coachQ||""};
+}
+function vOrg(sub,id){
+  const dels=S.team.filter(m=>m.role!=="DR");
+  if(sub==="pick"){
+    return `<button class="back noprint" data-go="#org">${ICON.back} Enregistrement</button>
+    <div class="top"><div class="logo">D</div><div><h1>Dicter une visite</h1><p>Pour quel délégué ?</p></div></div>
+    <div class="card">${dels.map(m=>`<a class="prow" href="#new/${m.id}" style="text-decoration:none;color:inherit"><div class="av" style="background:${color(m.id)}">${initials(m.name)}</div><div class="nm">${h(m.name)}<small>${h(m.role)}${reportsOf(m.id).length?" · dernier duo le "+h(fmtDate(reportsOf(m.id)[0].date)):" · premier duo"}</small></div><span style="color:var(--lavD);font-weight:700">›</span></a>`).join("")}</div>`;
+  }
+  if(sub==="prep"&&id){
+    const m=member(id), P=prepData(id); if(!m||!P) return vOrg("");
+    return `<button class="back noprint" data-go="#org">${ICON.back} Enregistrement</button>
+    <div class="top"><div class="logo">D</div><div><h1>Préparer le duo</h1><p>${h(m.name)} · ${P.n} duo${P.n>1?"s":""} réalisé${P.n>1?"s":""}</p></div></div>
+    <div class="hero prep"><div class="tag" style="color:var(--lavD)">Objectif fixé le ${h(fmtDate(P.last.date))}</div><div style="font-size:18px;font-weight:700;margin-top:6px;line-height:1.35">${h(P.objective||"Aucun objectif enregistré.")}</div>
+     <div class="muted small" style="margin-top:8px">À vérifier en premier pendant la journée.</div></div>
+    <div class="card prep" style="margin-top:12px">
+     <h4 style="margin-top:0">Axes travaillés au dernier duo</h4>${P.axes.length?`<ul>${P.axes.map(x=>`<li>${h(x)}</li>`).join("")}</ul>`:`<div class="muted">Aucun axe retenu.</div>`}
+     <h4>À observer en priorité</h4>${P.watch.length?`<ul>${P.watch.map(t=>`<li><b>${h(SHORT[t])}</b> · ${LEVELS[P.g[t]]}</li>`).join("")}</ul>`:`<div class="muted">Rien de signalé au dernier duo.</div>`}
+     ${P.strong.length?`<h4>Points forts à confirmer</h4><div class="chips">${P.strong.map(t=>`<span class="pill gr">${h(SHORT[t])}</span>`).join("")}</div>`:""}
+     ${P.objs.length?`<h4>Objections déjà rencontrées</h4><ul>${P.objs.map(o=>`<li>« ${h(o)} »</li>`).join("")}</ul>`:""}
+     ${(S.campaign.priority||[]).length?`<h4>Priorités du cycle</h4><div class="chips">${S.campaign.priority.map(k=>`<span class="pill" style="background:var(--lav);color:var(--lavD)">★ ${k}</span>`).join("")}</div>`:""}
+     ${P.q?`<h4>Question pour lancer le débrief</h4><div style="font-style:italic">${h(P.q)}</div>`:""}
+    </div>
+    <button class="btn full amb" data-go="#new/${m.id}" style="margin-top:14px;padding:16px">Commencer le compte-rendu du duo</button>`;
+  }
+  const done=dels.filter(m=>reportsOf(m.id).length);
+  const ovOpen=done.length>=OV_MIN;
+  const lockB=t=>`<div class="lockb">${ICON.lock}${t}</div>`;
+  let ov="";
+  if(ovOpen){
+    const G=Object.fromEntries(done.map(m=>[m.id,lastGrid(m.id)]));
+    const common=GRID_THEMES.map(t=>({t,who:done.filter(m=>G[m.id][t]===1)})).filter(x=>x.who.length>=2).sort((a,b)=>b.who.length-a.who.length);
+    ov=`<div class="muted small" style="margin-top:10px">Dernier niveau observé pour chaque délégué.</div>
+     <div style="overflow-x:auto"><table class="mx"><tr><th></th>${done.map(m=>`<th title="${h(m.name)}">${initials(m.name)}</th>`).join("")}</tr>
+     ${GRID_THEMES.map(t=>`<tr><td class="l">${h(SHORT[t])}</td>${done.map(m=>`<td class="c v${G[m.id][t]}"></td>`).join("")}</tr>`).join("")}</table></div>
+     <div class="row small muted" style="gap:10px;margin-top:6px;flex-wrap:wrap"><span><span class="pill" style="background:#F9C9C0">&nbsp;</span> À travailler</span><span><span class="pill" style="background:#F8E2B0">&nbsp;</span> En progrès</span><span><span class="pill" style="background:#BFE6D3">&nbsp;</span> Maîtrisé</span><span><span class="pill" style="background:#F1F0F6">&nbsp;</span> Non observé</span></div>
+     ${common.length?common.map(c=>`<div class="alert"><b>${h(SHORT[c.t])}</b> à travailler pour ${c.who.length} délégués (${c.who.map(m=>h(m.name.split(" ")[0])).join(", ")}). Un atelier collectif en réunion de région serait plus efficace que ${c.who.length} conseils individuels.</div>`).join(""):`<div class="muted small" style="margin-top:10px">Aucun point faible commun à plusieurs délégués pour le moment.</div>`}`;
+  }
+  return `<div class="top"><div class="logo">D</div><div><h1>Enregistrement</h1><p>Dicter une visite, préparer les duos</p></div></div>
+  <button class="dictbig" data-go="#org/pick"><span class="mc"><i></i><i></i>${ICON.mic.replace("<svg",'<svg width="34" height="34"')}</span><span class="tx"><b>Dicter une visite</b><small>Choisir le délégué, puis raconter la journée</small></span><span class="ar">›</span></button>
+  <h2 style="margin-top:22px">Organisation</h2>
+  <div class="orgc"><div class="ico" style="background:var(--lav)">🗓️</div><h3>Préparer le duo</h3>
+   <p>Avant de partir en duo : l'objectif fixé la dernière fois, les axes en cours, les compétences à observer en priorité et les objections déjà rencontrées.</p>
+   <div style="margin-top:10px">${dels.map(m=>{const n=reportsOf(m.id).length;return n?`<a class="prow" href="#org/prep/${m.id}" style="text-decoration:none;color:inherit"><div class="av" style="background:${color(m.id)}">${initials(m.name)}</div><div class="nm">${h(m.name)}<small>${n} duo${n>1?"s":""} · prêt à préparer</small></div><span style="color:var(--lavD);font-weight:700">›</span></a>`
+     :`<div class="prow locked"><div class="av" style="background:${color(m.id)}">${initials(m.name)}</div><div class="nm">${h(m.name)}<small>Disponible après le premier duo</small></div><span style="color:var(--mut)">${ICON.lock.replace("<svg",'<svg width="18" height="18"')}</span></div>`}).join("")}</div>
+   ${done.length?"":lockB("Option disponible après le premier duo enregistré dans l'app")}</div>
+  <div class="orgc"><div class="ico" style="background:var(--rose,#FFE3EE)">🧭</div><h3>Vue d'ensemble de l'équipe</h3>
+   <p>Les compétences de tous les délégués sur un seul tableau. Elle montre si plusieurs délégués ont besoin d'une formation sur un même sujet ou partagent un même point faible : on voit tout de suite où se situe un problème sur la région.</p>
+   ${ovOpen?ov:lockB(`Disponible dès que ${OV_MIN} délégués auront eu un duo (${done.length}/${OV_MIN})`)}</div>`;
+}
+/* ---------- RÉGLAGES ---------- */
+function vSettings(){
+  const c=S.campaign;
+  return `<div class="top"><div class="logo">D<span>.</span></div><div><h1>Réglages</h1><p>Équipe, campagne, données</p></div></div>
+  <h2>Équipe</h2><div class="card">
+   ${S.team.map(m=>`<div class="kpi" style="grid-template-columns:1.6fr 1fr auto"><input type="text" data-tn="${m.id}" value="${h(m.name)}"><select data-tr="${m.id}">${["DR","DMS","DMV"].map(r=>`<option ${m.role===r?"selected":""}>${r}</option>`).join("")}</select><button class="x" data-act="delm" data-id="${m.id}">×</button></div>`).join("")}
+   <button class="btn ghost sm" data-act="addm" style="margin-top:6px">+ Ajouter un membre</button></div>
+  ${campBlock()}
+  <h2>Données</h2><div class="card">
+   <p class="muted" style="margin-top:0">Les comptes-rendus sont enregistrés uniquement dans ce navigateur, sur cet appareil. Exportez régulièrement une sauvegarde.</p>
+   <div class="row"><button class="btn sec sm" data-act="export">Exporter la sauvegarde</button><button class="btn sec sm" data-act="import">Importer (sauvegarde ou fiches équipe)</button><button class="btn danger sm" data-act="reset">Tout effacer</button></div>
+   <input type="file" id="fileIn" accept="application/json,.json" style="display:none"></div>
+  <h2>Installer l'app</h2><div class="card"><div class="step"><div class="n">1</div><div><b>Ouvrir le lien dans Safari</b><span>Sur iPhone comme sur iPad.</span></div></div>
+   <div class="step"><div class="n">2</div><div><b>Toucher « ⋯ » puis Partager</b><span>Les 3 petits points en bas à droite. Sur un iPhone plus ancien, le bouton Partager (carré avec une flèche) est directement en bas ; sur iPad, en haut à droite.</span></div></div>
+   <div class="step"><div class="n">3</div><div><b>Faire glisser la liste, toucher « Sur l'écran d'accueil », puis « Ajouter »</b><span>Duo apparaît comme une app et fonctionne hors réseau. Ouvrez-le toujours depuis l'icône : c'est là que vos comptes-rendus sont enregistrés.</span></div></div></div>
+  <h2>Dictée vocale</h2><div class="card"><p class="muted" style="margin:0">Le micro de l'outil utilise la reconnaissance vocale du navigateur (Safari ou Chrome). Si elle n'est pas disponible, le micro du clavier iPhone/iPad fonctionne aussi dans la zone de texte. L'analyse du compte-rendu se fait entièrement sur l'appareil.</p></div>
+  <p class="foot tiny">Duo · conçu par Camille Lacroix</p>`;
+}
+
+/* =========================================================
+   DICTÉE PLEIN ÉCRAN (mains libres)
+   ========================================================= */
+let REC=null, recOn=false, committed="", interimTxt="", t0=0, elapsed=0, tick=null, WL=null, spkT=null, pendingGen=false;
+const VOCAB=[
+ [/\btri\s?pl[ie]?\s?[xk]?s?\s?[ae]m+e?s?\b|\btriple\s?(x|ix|ex)\s?[ae]m+e?\b|\btripli[xk]s?[ae]n+e?\b/gi,"Triplixam"],
+ [/\bcover?\s?[ae]m+e?\b/gi,"Coveram"],
+ [/\bco\s?s[iy]m\s?pr[eè]l+e?\b|\bcosimprelle\b/gi,"Cosimprel"],
+ [/\bnatri\s?[xk]s?\s?[ae]m+e?\b/gi,"Natrixam"],
+ [/\bbi\s?pr[eé]t[eé]\s?ra[xk]s?\b/gi,"Bipreterax"],
+ [/\blipo\s?ro[sz][ae]s?\b/gi,"Liporosa"],
+ [/\bjun?\s?nal[iy][sz]{1,2}a\b/gi,"Junaliza"],
+ [/\bda\s?f+lon+e?\b/gi,"Daflon"],
+ [/\bp[eé]tra\b/gi,"PETRA"],[/\bsn?[iy]\s?man+\b/gi,"Snyman"],[/\bstrath?[eé]e?\b/gi,"STRATHE"],
+ [/\bhyv[eè]t+e?\b/gi,"HYVET"],[/\badvance\b/gi,"ADVANCE"],[/\bascot+e?\b/gi,"ASCOT"],[/\beuropa\b/gi,"EUROPA"],
+ [/\bp[eé]rin\s?do\s?pril+e?\b/gi,"périndopril"],[/\binda\s?pa\s?mide\b/gi,"indapamide"],[/\bamlo\s?dipine\b/gi,"amlodipine"],
+ [/\brosu\s?va\s?statine\b/gi,"rosuvastatine"],[/(^|\s)[eé]z[eé]\s?ti\s?mi[bd]e\b/gi,"$1ézétimibe"],
+ [/\bh\s?t\s?a\b/gi,"HTA"],[/\bl\s?d\s?l\b/gi,"LDL"],[/\bcrm\b/gi,"CRM"],[/\bc\s?h\s?u\b/gi,"CHU"],[/\bdocteur\b/gi,"Dr"]
+];
+function fixVocab(t){VOCAB.forEach(([r,v])=>{t=t.replace(r,v)});return t}
+function processFinal(seg){
+  let t=" "+seg.trim()+" ", n=norm(t), cmd=null;
+  if(/(genere|generer|lance|fais)( moi)? (le |un )?(compte rendu|compte-rendu|cr)\s*$/.test(n.trim())){cmd="gen";t=t.replace(/\s(g[ée]n[èeé]re[rz]?|lance|fais)( moi)? (le |un )?(compte[ -]rendu|CR)\s*$/i," ")}
+  else if(/(termine|fin de (la )?dictee|stop (la )?dictee|arrete (la )?dictee|c'est tout)\s*$/.test(n.trim())){cmd="stop";t=t.replace(/\s(termin[ée]e?|fin de (la )?dict[ée]e|stop (la )?dict[ée]e|arr[êe]te (la )?dict[ée]e|c'est tout)\s*$/i," ")}
+  if(/(efface|supprime|annule) (la |cette )?derniere phrase/.test(n)){return {text:"",cmd:"undo"}}
+  t=t.replace(/\s+nouveau paragraphe\s*/gi,"\n\n").replace(/\s+point [àa] la ligne\s*/gi,".\n").replace(/\s+[àa] la ligne\s*/gi,"\n")
+     .replace(/\s+point final\s*/gi,". ").replace(/\s+point d'interrogation\s*/gi,"? ").replace(/\s+point d'exclamation\s*/gi,"! ")
+     .replace(/\s+virgule\b/gi,",").replace(/\s+deux points\b/gi," :").replace(/\s+ouvrez? les guillemets\s*/gi," « ").replace(/\s+fermez? les guillemets\b/gi," »");
+  t=t.replace(/([\wÀ-ÿ']+)\s+point\s*$/i,(m0,w)=>/^(?:[ldcsj]')?(autre|un|ce|le|du|bon|premier|dernier|second|seul|meme|même|quel|chaque)$/i.test(w)?m0:w+".");
+  t=fixVocab(t).replace(/[ \t]+([,.?!])/g,"$1").replace(/[ \t]{2,}/g," ").replace(/^[ \t]+|[ \t]+$/g,"");
+  if(t&&!/[.!?,:;\n»]$/.test(t)) t+=".";
+  if(t) t=t.charAt(0).toUpperCase()+t.slice(1);
+  return {text:t,cmd};
+}
+function joinText(a,b){if(!b)return a;if(!a)return b;return a+(/\n$/.test(a)?"":" ")+b}
+function capAfter(a,b){return /[.!?\n]\s*$/.test(a)||!a?b:b.charAt(0).toLowerCase()+b.slice(1)}
+function ovRender(){
+  const el=$("#ovText"); if(!el) return;
+  el.innerHTML=committed||interimTxt?h(committed)+(interimTxt?` <span class="int">${h(interimTxt)}</span>`:""):`<span class="ph">Je vous écoute… Racontez la journée : ce qui a bien fonctionné, ce qui peut progresser, les objections entendues.</span>`;
+  el.scrollTop=el.scrollHeight;
+  const ta=$("#dict"); if(ta) ta.value=committed;
+}
+function fmtT(ms){const s=Math.floor(ms/1000);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+async function wake(on){try{if(on&&"wakeLock" in navigator){WL=await navigator.wakeLock.request("screen")}else if(!on&&WL){await WL.release();WL=null}}catch(_){}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&recOn)wake(true)});
+function openOv(){const ov=$("#ov");ov.hidden=false;const m=DRAFT&&member(DRAFT.memberId);$("#ovName").textContent=m?"Duo avec "+m.name:"";document.body.style.overflow="hidden";ovRender()}
+function closeOv(){const ov=$("#ov");ov.hidden=true;document.body.style.overflow="";clearInterval(tick);tick=null}
+function startRec(resume){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const ta=$("#dict");
+  if(!SR){toast("Dictée intégrée non disponible ici : utilisez le micro du clavier");ta&&ta.focus();return}
+  if(!resume){committed=(ta?ta.value:(DRAFT&&DRAFT.text)||"").trim();elapsed=0}
+  interimTxt=""; recOn=true; t0=Date.now();
+  openOv(); $("#ov").classList.remove("paused"); $("#ovState").textContent="J'écoute"; $("#ovPause").textContent="Pause";
+  clearInterval(tick); tick=setInterval(()=>{$("#ovTime").textContent=fmtT(elapsed+Date.now()-t0)},500);
+  wake(true); listen();
+}
+function listen(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  REC=new SR(); REC.lang="fr-FR"; REC.continuous=true; REC.interimResults=true; REC.maxAlternatives=1;
+  REC.onresult=e=>{
+    interimTxt="";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const tr=e.results[i][0].transcript;
+      if(e.results[i].isFinal){
+        const p=processFinal(tr);
+        if(p.cmd==="undo"){committed=committed.replace(/\s*[^.!?\n]+[.!?]?\s*$/,"");toast("Dernière phrase effacée")}
+        else if(p.text) committed=joinText(committed,capAfter(committed,p.text));
+        if(p.cmd==="stop"){finish(false);return}
+        if(p.cmd==="gen"){finish(true);return}
+      } else interimTxt+=tr;
+    }
+    const ov=$("#ov"); ov.classList.add("speaking"); clearTimeout(spkT); spkT=setTimeout(()=>ov.classList.remove("speaking"),900);
+    if(DRAFT){DRAFT.text=committed;saveDraft()}
+    ovRender();
+  };
+  REC.onerror=e=>{
+    if(e.error==="not-allowed"||e.error==="service-not-allowed"){recOn=false;toast("Autorisez le micro pour ce site dans les réglages du navigateur");closeOv();wake(false)}
+    else if(e.error==="network"){$("#ovState").textContent="Connexion instable…"}
+  };
+  REC.onend=()=>{ if(recOn){ setTimeout(()=>{ if(recOn){ try{listen()}catch(_){} } },200) } };
+  try{REC.start()}catch(_){}
+}
+function pauseRec(){
+  recOn=false; elapsed+=Date.now()-t0; clearInterval(tick); if(REC){try{REC.stop()}catch(_){}}
+  if(interimTxt){committed=joinText(committed,capAfter(committed,processFinal(interimTxt).text));interimTxt=""}
+  $("#ov").classList.add("paused"); $("#ovState").textContent="En pause"; $("#ovPause").textContent="Reprendre"; ovRender();
+  if(DRAFT){DRAFT.text=committed;saveDraft()}
+}
+function stopRec(){
+  const was=recOn; recOn=false; if(REC){try{REC.stop()}catch(_){}} wake(false);
+  if(interimTxt){committed=joinText(committed,capAfter(committed,processFinal(interimTxt).text));interimTxt=""}
+  const el=$("#dict"); if(el&&(was||!$("#ov").hidden)) el.value=committed;
+  if(el&&DRAFT){DRAFT.text=el.value;saveDraft()}
+  clearInterval(tick);
+}
+function finish(gen){stopRec();closeOv();if(gen)setTimeout(doGenerate,50);else toast("Dictée enregistrée")}
+function doGenerate(){
+  stopRec(); closeOv();
+  const ta=$("#dict"); const txt=((ta?ta.value:DRAFT.text)||"").trim(); DRAFT.text=txt;
+  if(txt.split(/\s+/).length<6){toast("Dictez au moins quelques phrases sur la journée");return}
+  const m=member(DRAFT.memberId);
+  const a=analyse(txt,m,{products:DRAFT.products,kpis:DRAFT.kpis});
+  DRAFT.rep={id:"draft",memberId:m.id,date:DRAFT.date||today(),nb:DRAFT.nb,cibles:DRAFT.cibles.slice(),prev:DRAFT.prev,text:txt,kpis:DRAFT.kpis.filter(k=>k.p),a};
+  saveDraft(); go("#r/draft");
+}
+function micUI(){}
+
+const SAMPLE="Journée avec elle à Montpellier, sept visites dont deux au CHU. Très bonne préparation, elle connaissait l'historique de chaque médecin. L'ouverture est naturelle, elle reprend bien la dernière visite. Par contre elle parle beaucoup et pose peu de questions de découverte, chez le Dr Martin elle a enchaîné sur Triplixam sans savoir combien de ses patients étaient non contrôlés. Objection sur la toux avec le périndopril, elle a très bien répondu avec les chiffres. En revanche sur l'objection hypokaliémie elle a hésité et n'a pas vérifié que le médecin était convaincu. Elle n'a demandé un engagement que sur une visite sur sept, il faut conclure systématiquement avec un patient précis. Très bonne maîtrise des études, PETRA et Snyman cités précisément. Liporosa pas abordé alors que c'est prioritaire. Belle relation avec la pharmacienne de l'hôpital, elle a obtenu un projet de staff. Elle semble un peu fatiguée en ce moment avec beaucoup de route.";
+
+/* =========================================================
+   ÉVÉNEMENTS
+   ========================================================= */
+function setPath(o,p,v){const k=p.split(".");let x=o;for(let i=0;i<k.length-1;i++)x=x[k[i]];x[k[k.length-1]]=v}
+function delPath(o,p){const k=p.split(".");let x=o;for(let i=0;i<k.length-1;i++)x=x[k[i]];const last=k[k.length-1];Array.isArray(x)?x.splice(+last,1):delete x[last]}
+function curRepId(){const [v,id]=location.hash.slice(1).split("/");return v==="r"?id:null}
+function persistRep(id){if(id==="demo")return;if(id==="draft")saveDraft();else save()}
+
+document.addEventListener("click",e=>{
+  const g=e.target.closest("[data-go]"); if(g){e.preventDefault();if(recOn){stopRec();closeOv()}go(g.dataset.go);return}
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  const act=b.dataset.act;
+  const rid=curRepId(), rep=rid&&getRep(rid);
+  switch(act){
+   case "dictate": stopRec(); ensureDraft(b.dataset.id); go("#new/"+b.dataset.id); startRec(); break;
+   case "mic": startRec(); break;
+   case "sample": { const m=member(DRAFT.memberId); const t=SAMPLE.replace("avec elle","avec "+m.name.split(" ")[0]); $("#dict").value=t; DRAFT.text=t; if(!DRAFT.nb){DRAFT.nb="7";$("#fNb").value="7"} saveDraft(); break; }
+   case "cleartext": if(confirm("Effacer la dictée ?")){$("#dict").value="";committed="";DRAFT.text="";saveDraft()} break;
+   case "prev": DRAFT.prev=DRAFT.prev===b.dataset.v?"":b.dataset.v; saveDraft(); b.parentNode.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c.dataset.v===DRAFT.prev)); break;
+   case "cible": case "prod": { const arr=act==="cible"?DRAFT.cibles:DRAFT.products, v=b.dataset.v, i=arr.indexOf(v); i<0?arr.push(v):arr.splice(i,1); b.classList.toggle("on"); saveDraft(); break; }
+   case "addkpi": DRAFT.kpis.push({p:"",v:""}); if(DRAFT.kpis.length===1)DRAFT.kpis.push({p:"",v:""}); saveDraft(); refreshKpis(); break;
+   case "delkpi": DRAFT.kpis.splice(+b.dataset.i,1); saveDraft(); refreshKpis(); break;
+   case "generate": doGenerate(); break;
+   case "saveRep": {
+     const r=DRAFT.rep; r.id=uid(); r.created=Date.now(); r.mode="final"; S.reports.push(r); save(); DRAFT=null; saveDraft(); toast("Compte-rendu enregistré"); go("#r/"+r.id); break; }
+   case "discard": if(confirm("Abandonner ce compte-rendu ?")){const id=DRAFT.memberId;DRAFT=null;saveDraft();go("#m/"+id)} break;
+   case "delRep": if(confirm("Supprimer définitivement ce compte-rendu ?")){const r=rep;S.reports=S.reports.filter(x=>x!==r);save();go("#m/"+r.memberId)} break;
+   case "del": delPath(rep.a,b.dataset.p); persistRep(rid); render(); break;
+   case "tog": { const sl=ensureSel(rep.a), k=b.dataset.k.split("."); let o=sl; for(let i=0;i<k.length-1;i++)o=o[k[i]]; const last=k[k.length-1]; o[last]=!o[last];
+     if(k.length===3&&last!=="on"&&o[last]) o.on=true; if(k[0]==="camp") o.touched=true;
+     persistRep(rid); b.classList.toggle("on",o[last]); const row=b.parentNode; row.classList.toggle("off",!o[last]);
+     if(last==="on"&&k[0]==="axes") row.closest(".axis").classList.toggle("off",!o[last]);
+     if(k.length===3&&last!=="on"&&o[last]){const host=b.closest(".axis")||b.closest(".si");if(host){host.classList.remove("off");const mk=host.querySelector('[data-k="'+k[0]+"."+k[1]+'.on"]');if(mk)mk.classList.add("on")}}
+     const cn=b.closest(".sec")&&b.closest(".sec").querySelector(".cnt"); if(cn&&Array.isArray(sl[k[0]])) cn.textContent=sl[k[0]].filter(x=>x.on).length+"/"+sl[k[0]].length;
+     const sb=$("#selBtn"); if(sb) sb.textContent="Créer le compte-rendu · "+selCount(rep.a)+" éléments"; break; }
+   case "mode": rep.mode=b.dataset.v; persistRep(rid); render(); break;
+   case "add": rep.a[b.dataset.p].push(b.dataset.p==="strengths"?{text:"Nouvel acquis",th:"",keep:""}:"Nouveau point"); ensureSel(rep.a); persistRep(rid); render(); break;
+   case "grid": { const t=b.dataset.t; rep.a.grid[t]=((rep.a.grid[t]||0)+1)%4; persistRep(rid); b.querySelector(".dot").className="dot l"+rep.a.grid[t]; b.querySelector("small").textContent=LEVELS[rep.a.grid[t]]; break; }
+   case "copy": copyText(reportText(rep)); break;
+   case "mail": { const m=member(rep.memberId); location.href="mailto:?subject="+encodeURIComponent("Compte-rendu de visite duo · "+(m?m.name:"")+" · "+fmtDate(rep.date))+"&body="+encodeURIComponent(reportText(rep)); break; }
+   case "print": printReport(rep); break;
+   case "word": exportWord(rep); break;
+   case "profil": { const m=member(b.dataset.id); m.profil=m.profil===b.dataset.v?"":b.dataset.v; save(); render(); break; }
+   case "ovstop": stopRec(); closeOv(); break;
+   case "ovpause": if(recOn){pauseRec()}else{startRec(true)} break;
+   case "impEx": $("#impTxt").value=CAMP_EX; break;
+   case "impFile": $("#impFileIn").click(); break;
+   case "impParse": { const t=$("#impTxt").value.trim(); if(t.length<10){toast("Collez le contenu de la campagne");return} IMP={raw:t,p:parseCampaign(t)}; go("#camp/preview"); break; }
+   case "impPrio": { const p=IMP.p.prods[b.dataset.v]; p.prio=!p.prio; b.classList.toggle("on",p.prio); break; }
+   case "impAdd": IMP.p.prods[b.dataset.v]={msg:"",prio:false}; render(); break;
+   case "impSave": { const c=S.campaign, p=IMP.p; c.history=c.history||[];
+     c.history.unshift({cycle:c.cycle,priority:(c.priority||[]).slice(),notes:c.notes,msgs:Object.assign({},c.msgs),importedAt:c.importedAt||"",imported:!!c.imported});
+     c.history=c.history.slice(0,8); c.cycle=$("#impCycle").value.trim()||p.cycle; c.priority=Object.keys(p.prods).filter(k=>p.prods[k].prio);
+     c.msgs={}; Object.keys(p.prods).forEach(k=>{if(p.prods[k].msg.trim())c.msgs[k]=p.prods[k].msg.trim()});
+     c.notes=$("#impNotes").value.trim(); c.imported=true; c.importedAt=today(); save(); IMP=null; toast("Nouvelle campagne enregistrée"); go("#set"); break; }
+   case "campRestore": { const c=S.campaign, x=c.history[+b.dataset.i]; if(!confirm("Restaurer « "+(x.cycle||"Sans nom")+" » ?"))return;
+     const cur={cycle:c.cycle,priority:(c.priority||[]).slice(),notes:c.notes,msgs:Object.assign({},c.msgs),importedAt:c.importedAt||"",imported:!!c.imported};
+     c.history.splice(+b.dataset.i,1,cur); Object.assign(c,{cycle:x.cycle,priority:x.priority,notes:x.notes,msgs:x.msgs,importedAt:x.importedAt,imported:x.imported}); save(); render(); toast("Campagne restaurée"); break; }
+   case "prio": { const p=S.campaign.priority, i=p.indexOf(b.dataset.v); i<0?p.push(b.dataset.v):p.splice(i,1); b.classList.toggle("on"); save(); break; }
+   case "addm": S.team.push({id:uid(),name:"Nouveau délégué",role:"DMV"}); save(); render(); break;
+   case "delm": { const m=member(b.dataset.id); if(confirm("Retirer "+m.name+" de l'équipe ? Ses comptes-rendus sont conservés dans la sauvegarde.")){S.team=S.team.filter(x=>x!==m);save();render()} break; }
+   case "export": { const blob=new Blob([JSON.stringify(S,null,1)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="duo-sauvegarde-"+today()+".json"; document.body.appendChild(a); a.click(); a.remove(); break; }
+   case "import": $("#fileIn").click(); break;
+   case "reset": if(confirm("Effacer tous les comptes-rendus et réglages de cet appareil ?")&&confirm("Confirmer : cette action est définitive.")){S=blank();save();DRAFT=null;saveDraft();render()} break;
+  }
+});
+function refreshKpis(){const m=member(DRAFT.memberId);const prods=Object.keys(PRODUCTS).filter(k=>PRODUCTS[k].roles.includes(m.role));$("#kpis").innerHTML=(DRAFT.kpis.length?DRAFT.kpis:[{p:"",v:""}]).map((k,i)=>kpiRow(k,i,prods)).join("")}
+
+document.addEventListener("input",e=>{
+  const t=e.target; if(t.tagName==="TEXTAREA"&&(t.dataset.msg||t.dataset.impmsg||t.dataset.mf)){t.style.height="auto";t.style.height=(t.scrollHeight+4)+"px"}
+  if(t.id==="dict"&&DRAFT){DRAFT.text=t.value;committed=t.value.trim();saveDraft()}
+  else if(t.id==="fDate"&&DRAFT){DRAFT.date=t.value;saveDraft()}
+  else if(t.id==="fNb"&&DRAFT){DRAFT.nb=t.value;saveDraft()}
+  else if(t.dataset.kpi&&DRAFT){const i=+t.dataset.i;while(DRAFT.kpis.length<=i)DRAFT.kpis.push({p:"",v:""});DRAFT.kpis[i][t.dataset.kpi]=t.value;saveDraft()}
+  else if(t.dataset.mf){const m=member(t.dataset.id);m[t.dataset.mf]=t.value;save()}
+  else if(t.dataset.p&&t.isContentEditable){const rid=curRepId(),rep=getRep(rid);if(rep){setPath(rep.a,t.dataset.p,t.innerText.trim());persistRep(rid)}}
+  else if(t.id==="cCycle"){S.campaign.cycle=t.value;save()}
+  else if(t.dataset.impmsg&&IMP){IMP.p.prods[t.dataset.impmsg].msg=t.value}
+  else if(t.id==="cNotes"){S.campaign.notes=t.value;save()}
+  else if(t.dataset.msg){S.campaign.msgs[t.dataset.msg]=t.value;save()}
+  else if(t.dataset.tn){member(t.dataset.tn).name=t.value;save()}
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.kpi&&DRAFT){const i=+t.dataset.i;while(DRAFT.kpis.length<=i)DRAFT.kpis.push({p:"",v:""});DRAFT.kpis[i][t.dataset.kpi]=t.value;saveDraft()}
+  else if(t.dataset.tr){member(t.dataset.tr).role=t.value;save()}
+  else if(t.id==="addAxis"&&t.value){const rid=curRepId(),rep=getRep(rid);const th=TH[t.value];rep.a.axes.push({th:th.id,label:th.label,obs:"",adv:th.adv[0].t+" → "+th.adv[0].d,alt:th.adv[1].t+" → "+th.adv[1].d});if(!rep.a.objective||rep.a.axes.length===1)rep.a.objective=th.obj;if((rep.a.grid[th.id]||0)===0)rep.a.grid[th.id]=1;ensureSel(rep.a);persistRep(rid);render()}
+  else if(t.id==="impFileIn"&&t.files[0]){const fr=new FileReader();fr.onload=()=>{let x=String(fr.result);try{const j=JSON.parse(x);x=typeof j==="string"?j:Object.entries(j).map(([k,v])=>k+"\n- "+(Array.isArray(v)?v.join("\n- "):v)).join("\n\n")}catch(_){} $("#impTxt").value=x;toast("Fichier chargé")};fr.readAsText(t.files[0])}
+  else if(t.id==="fileIn"&&t.files[0]){const fr=new FileReader();fr.onload=()=>{try{const d=JSON.parse(fr.result);
+   if(d.type==="duo-team"&&Array.isArray(d.team)){let n=0;const miss=[];d.team.forEach(x=>{const m=S.team.find(t=>norm(t.name)===norm(x.name));if(!m){miss.push(x.name);return}["entree","secteur","parcours","notes","profil"].forEach(k=>{if(x[k])m[k]=x[k]});n++});save();render();toast(n+" fiche"+(n>1?"s":"")+" mise"+(n>1?"s":"")+" à jour"+(miss.length?" · introuvable : "+miss.join(", "):""));return}
+   if(!d.team||!d.reports)throw 0;if(confirm("Remplacer les données de cet appareil par cette sauvegarde ?")){S=d;S.campaign=Object.assign(blank().campaign,S.campaign||{});save();toast("Sauvegarde importée");render()}}catch(_){toast("Fichier de sauvegarde invalide")}};fr.readAsText(t.files[0])}
+});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.isContentEditable&&!e.shiftKey){e.preventDefault();e.target.blur()}});
+
+
+/* ---------- TRAME FIXE du compte-rendu (PDF + mail) ---------- */
+const PD_SECTIONS=[["acq","Acquis à conserver","#4E8C74"],["axes","Axes de progrès","#B5735C"],["obj","Objections et réponses","#5F79A8"],["camp","Campagne et chiffres","#A88A4C"],["next","Objectif pour le prochain duo","#7466B0"],["grid","Compétences observées","#6C83B0"]];
+const PD_EMPTY="Non abordé lors de ce duo.";
+function pdData(r){
+  const m=member(r.memberId)||{name:"",role:""}, a=r.a, sl=ensureSel(a), d=dr();
+  const prevRep=(S.reports||[]).filter(x=>x.memberId===r.memberId&&x.id!==r.id&&x.date<r.date).sort((x,y)=>y.date.localeCompare(x.date))[0];
+  const prevSt=r.prev?(r.prev==="atteint"?"atteint":r.prev==="progres"?"en progrès":"pas encore atteint"):"";
+  return {m,d,date:fmtDate(r.date),nb:r.nb||"",prod:(a.products||[]).join(", "),headline:a.headline||"",
+   prevObj:prevRep&&prevRep.a&&prevRep.a.objective?prevRep.a.objective:"",prevSt:(sl.prev!==false)?prevSt:"",
+   acq:a.strengths.map((x,i)=>({t:x.text,k:sl.strengths[i].keep&&x.keep?x.keep:""})).filter((x,i)=>sl.strengths[i].on),
+   axes:a.axes.map((x,i)=>{const q=sl.axes[i];return {on:q.on,l:x.label,o:q.obs&&x.obs?x.obs:"",c:q.adv?x.adv:"",p:q.alt&&x.alt?x.alt:""}}).filter(x=>x.on),
+   other:(a.other||[]).filter((x,i)=>sl.other[i].on),
+   obj:a.objs.filter((x,i)=>sl.objs[i].on).map(o=>({q:String(o.o).replace(/^[«"\s]+|[»"\s]+$/g,""),r:String(o.r).split("\n").map(x=>x.replace(/^•\s*/,"").trim()).filter(Boolean),src:(o.st||[]).filter(k=>STUDIES[k]).map(k=>STUDIES[k])})),
+   camp:a.camp.filter((x,i)=>sl.camp[i].on),
+   next:sl.objective&&a.objective?a.objective:"",
+   grid:sl.grid?GRID_THEMES.map(t=>({l:TH[t].label,v:a.grid[t]||0})).filter(x=>x.v>0):[]};
+}
+function pdHTML(r){
+  const D=pdData(r), E=`<div class="pdE">${PD_EMPTY}</div>`;
+  const body={
+   acq:D.acq.length?`<ul>${D.acq.map(x=>`<li>${h(x.t)}${x.k?`<div class="sub">${h(x.k)}</div>`:""}</li>`).join("")}</ul>`:E,
+   axes:D.axes.length||D.other.length?D.axes.map((x,i)=>`<div class="ax"><div class="l">${i+1}. ${h(x.l)}</div>${x.o?`<div class="sub"><b>Observé :</b> ${h(x.o)}</div>`:""}${x.c?`<div class="sub"><b>Conseil :</b> ${h(x.c)}</div>`:""}${x.p?`<div class="sub"><b>Autre piste :</b> ${h(x.p)}</div>`:""}</div>`).join("")+(D.other.length?`<ul>${D.other.map(o=>`<li>${h(o)}</li>`).join("")}</ul>`:""):E,
+   obj:D.obj.length?D.obj.map(o=>`<div class="ax"><div class="l">« ${h(o.q)} »</div><ul class="sub">${o.r.map(x=>`<li>${h(x)}</li>`).join("")}</ul>${o.src.length?`<div class="src">Source : ${o.src.map(s=>`<a href="${h(s.url)}">${h(s.n)}</a>`).join(" · ")}</div>`:""}</div>`).join(""):E,
+   camp:D.camp.length?`<ul>${D.camp.map(c=>`<li>${h(c)}</li>`).join("")}</ul>`:E,
+   next:D.next?`<div>${h(D.next)}</div>`:E,
+   grid:D.grid.length?`<table class="grid2">${D.grid.map(g=>`<tr><td>${h(g.l)}</td><td class="lv">${LEVELS[g.v]}<span class="dots">${[1,2,3].map(n=>`<span class="${n<=g.v?"on":""}"></span>`).join("")}</span></td></tr>`).join("")}</table>`:E};
+  const info=[["Délégué(e)",D.m.name],["Fonction",D.m.role||"-"],["Secteur",D.m.secteur||"-"],["Date du duo",D.date],
+   ["Visites réalisées",D.nb||"-"],["Produits travaillés",D.prod||"-"],["Directrice régionale",D.d?D.d.name:"-"],["Objectif précédent",D.prevSt||"-"]];
+  return `<div class="top"><h1>Compte-rendu de visite duo</h1><div class="s">${h(D.m.name)}<br>${h(D.date)}</div></div>
+  <div class="info">${info.map(([k,v])=>`<div><small>${k}</small><b>${h(v)}</b></div>`).join("")}</div>
+  <div class="box syn" style="--k:#23253A"><h2>Synthèse</h2><div>${h(D.headline)||PD_EMPTY}</div>${D.prevObj?`<div class="sub" style="margin-top:4px"><b>Objectif fixé au duo précédent :</b> ${h(D.prevObj)}${D.prevSt?" ("+D.prevSt+")":""}</div>`:""}</div>
+  ${PD_SECTIONS.map(([k,t,c],i)=>`<div class="box" style="--k:${c}"><h2><i>${i+1}</i>${t}</h2>${body[k]}</div>`).join("")}
+  <div class="sign"><span>${D.d?h(D.d.name)+", Directrice régionale":""}</span><span>Document interne · usage managérial</span></div>`;
+}
+
+/* ---------- WORD (.docx) modifiable, même trame ---------- */
+const CRC_T=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u){let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRC_T[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zipStore(files){const enc=new TextEncoder(),parts=[],cd=[];let off=0;
+  files.forEach(([name,txt])=>{const nb=enc.encode(name),db=enc.encode(txt),crc=crc32(db);
+   const lh=new DataView(new ArrayBuffer(30));lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,0,true);lh.setUint32(14,crc,true);lh.setUint32(18,db.length,true);lh.setUint32(22,db.length,true);lh.setUint16(26,nb.length,true);
+   parts.push(new Uint8Array(lh.buffer),nb,db);
+   const ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint32(16,crc,true);ch.setUint32(20,db.length,true);ch.setUint32(24,db.length,true);ch.setUint16(28,nb.length,true);ch.setUint32(42,off,true);
+   cd.push(new Uint8Array(ch.buffer),nb);off+=30+nb.length+db.length});
+  const cdSize=cd.reduce((a,b)=>a+b.length,0);const end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,files.length,true);end.setUint16(10,files.length,true);end.setUint32(12,cdSize,true);end.setUint32(16,off,true);
+  return new Blob([...parts,...cd,new Uint8Array(end.buffer)],{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"})}
+function docxBlob(r){
+  const D=pdData(r), X=t=>String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const run=(t,o={})=>`<w:r><w:rPr>${o.b?"<w:b/>":""}${o.i?"<w:i/>":""}${o.caps?"<w:caps/>":""}${o.c?`<w:color w:val="${o.c}"/>`:""}${o.sz?`<w:sz w:val="${o.sz}"/>`:""}</w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r>`;
+  const P=(runs,o={})=>`<w:p><w:pPr>${o.bdr||""}<w:spacing w:before="${o.before||0}" w:after="${o.after==null?60:o.after}"/>${o.ind?`<w:ind w:left="${o.ind}" w:hanging="${o.hang||0}"/>`:""}${o.jc?`<w:jc w:val="${o.jc}"/>`:""}</w:pPr>${runs}</w:p>`;
+  const bul=(t,sub)=>P(run("•  ")+run(t),{ind:340,hang:200})+(sub?P(run(sub,{c:"4A4D66"}),{ind:340}):"");
+  const lbl=(k,v)=>P(run(k+" : ",{b:true})+run(v,{c:"4A4D66"}),{ind:340});
+  const E=P(run(PD_EMPTY,{i:true,c:"9A9CAE"}));
+  const B=(c,w)=>`<w:top w:val="single" w:sz="4" w:color="D9DAE3"/><w:left w:val="single" w:sz="${w||4}" w:color="${c||"D9DAE3"}"/><w:bottom w:val="single" w:sz="4" w:color="D9DAE3"/><w:right w:val="single" w:sz="4" w:color="D9DAE3"/>`;
+  const box=(c,title,body,fill)=>`<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/><w:tblBorders>${B(c,24)}</w:tblBorders><w:tblCellMar><w:top w:w="100" w:type="dxa"/><w:left w:w="180" w:type="dxa"/><w:bottom w:w="80" w:type="dxa"/><w:right w:w="180" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="10200"/></w:tblGrid><w:tr><w:tc><w:tcPr><w:tcW w:w="5000" w:type="pct"/>${fill?`<w:shd w:val="clear" w:color="auto" w:fill="${fill}"/>`:""}</w:tcPr>${P(run(title,{b:true,c,caps:true,sz:19}),{after:80})}${body}</w:tc></w:tr></w:tbl>`+P("",{after:120});
+  const cell=(k,v)=>`<w:tc><w:tcPr><w:tcW w:w="1250" w:type="pct"/></w:tcPr>${P(run(k,{caps:true,c:"8A8CA0",sz:14}),{after:20})}${P(run(v,{b:true,sz:19}),{after:40})}</w:tc>`;
+  const info=[["Délégué(e)",D.m.name],["Fonction",D.m.role||"-"],["Secteur",D.m.secteur||"-"],["Date du duo",D.date],["Visites réalisées",D.nb||"-"],["Produits travaillés",D.prod||"-"],["Directrice régionale",D.d?D.d.name:"-"],["Objectif précédent",D.prevSt||"-"]];
+  const infoT=`<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/><w:tblBorders>${B()}<w:insideH w:val="single" w:sz="4" w:color="E6E7EE"/><w:insideV w:val="single" w:sz="4" w:color="E6E7EE"/></w:tblBorders><w:tblCellMar><w:top w:w="60" w:type="dxa"/><w:left w:w="120" w:type="dxa"/><w:right w:w="120" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="2550"/><w:gridCol w:w="2550"/><w:gridCol w:w="2550"/><w:gridCol w:w="2550"/></w:tblGrid><w:tr>${info.slice(0,4).map(x=>cell(...x)).join("")}</w:tr><w:tr>${info.slice(4).map(x=>cell(...x)).join("")}</w:tr></w:tbl>`+P("",{after:120});
+  const C={acq:"4E8C74",axes:"B5735C",obj:"5F79A8",camp:"A88A4C",next:"7466B0",grid:"6C83B0"};
+  const body={
+   acq:D.acq.length?D.acq.map(x=>bul(x.t,x.k)).join(""):E,
+   axes:D.axes.length||D.other.length?D.axes.map((x,i)=>P(run((i+1)+". "+x.l,{b:true}),{before:40})+(x.o?lbl("Observé",x.o):"")+(x.c?lbl("Conseil",x.c):"")+(x.p?lbl("Autre piste",x.p):"")).join("")+D.other.map(o=>bul(o)).join(""):E,
+   obj:D.obj.length?D.obj.map(o=>P(run("« "+o.q+" »",{b:true}),{before:40})+o.r.map(x=>bul(x)).join("")+(o.src.length?P(run("Source : "+o.src.map(s=>s.n+" → "+s.url).join(" ; "),{c:"6B6E85",sz:16}),{ind:340}):"")).join(""):E,
+   camp:D.camp.length?D.camp.map(c=>bul(c)).join(""):E,
+   next:D.next?P(run(D.next)):E,
+   grid:D.grid.length?D.grid.map(g=>P(run(g.l+" : ")+run(LEVELS[g.v],{b:true})+run("  "+"●".repeat(g.v)+"○".repeat(3-g.v),{c:"6C83B0"}),{ind:340})).join(""):E};
+  const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>
+   ${P(run("Compte-rendu de visite duo",{b:true,sz:34}),{after:20})}${P(run(D.m.name+" · "+D.date,{c:"6B6E85",sz:18}),{after:160,bdr:'<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="4" w:color="23253A"/></w:pBdr>'})}
+   ${infoT}
+   ${box("23253A","Synthèse",P(run(D.headline||PD_EMPTY))+(D.prevObj?P(run("Objectif fixé au duo précédent : ",{b:true})+run(D.prevObj+(D.prevSt?" ("+D.prevSt+")":""),{c:"4A4D66"})):""),"F6F6F9")}
+   ${PD_SECTIONS.map(([k,t],i)=>box(C[k],(i+1)+"   "+t,body[k])).join("")}
+   ${P(run(D.d?D.d.name+", Directrice régionale":"",{c:"4A4D66",sz:18})+"<w:r><w:tab/></w:r>"+run("Document interne · usage managérial",{c:"4A4D66",sz:18}),{before:120,bdr:'<w:tabs><w:tab w:val="right" w:pos="10300"/></w:tabs>'})}
+   <w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="794" w:right="794" w:bottom="907" w:left="794" w:header="0" w:footer="0" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial" w:eastAsia="Arial"/><w:color w:val="23253A"/><w:sz w:val="20"/><w:lang w:val="fr-FR"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="60" w:line="264" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style></w:styles>`;
+  return zipStore([
+   ["[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>`],
+   ["_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`],
+   ["word/_rels/document.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+   ["word/document.xml",doc],["word/styles.xml",styles]]);
+}
+async function exportWord(r){
+  const m=member(r.memberId), name=("CR duo "+(m?m.name:"")+" "+r.date).replace(/[^\wÀ-ÿ \-]/g,"")+".docx";
+  const blob=docxBlob(r), file=new File([blob],name,{type:blob.type});
+  try{ if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:name});return} }catch(e){ if(e&&e.name==="AbortError") return; }
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);toast("Fichier Word créé");
+}
+function printReport(r){
+  const el=document.getElementById("pd"); el.innerHTML=pdHTML(r); document.body.classList.add("pdmode");
+  const m=member(r.memberId), old=document.title; document.title="CR duo "+(m?m.name:"")+" "+r.date;
+  const done=()=>{document.body.classList.remove("pdmode");document.title=old;window.removeEventListener("afterprint",done)};
+  window.addEventListener("afterprint",done); setTimeout(()=>window.print(),60); setTimeout(done,60000);
+}
+function reportText(r){
+  const D=pdData(r), E="  "+PD_EMPTY, L=["COMPTE-RENDU DE VISITE DUO","",
+   "Délégué(e) : "+D.m.name+(D.m.role?" ("+D.m.role+")":""),"Date du duo : "+D.date,"Visites réalisées : "+(D.nb||"-"),"Produits travaillés : "+(D.prod||"-"),
+   "Objectif précédent : "+(D.prevSt||"-"),"","SYNTHÈSE",D.headline||E];
+  if(D.prevObj) L.push("Objectif fixé au duo précédent : "+D.prevObj);
+  const sec=(i,t,lines)=>{L.push("",(i)+". "+t.toUpperCase());lines.length?L.push(...lines):L.push(E)};
+  sec(1,"Acquis à conserver",D.acq.flatMap(x=>["• "+x.t].concat(x.k?["   "+x.k]:[])));
+  sec(2,"Axes de progrès",D.axes.flatMap((x,i)=>[(i+1)+") "+x.l].concat(x.o?["   Observé : "+x.o]:[],x.c?["   Conseil : "+x.c]:[],x.p?["   Autre piste : "+x.p]:[])).concat(D.other.map(o=>"• "+o)));
+  sec(3,"Objections et réponses",D.obj.flatMap(o=>["• « "+o.q+" »"].concat(o.r.map(x=>"   - "+x),o.src.map(s=>"   Source : "+s.n+" → "+s.url))));
+  sec(4,"Campagne et chiffres",D.camp.map(c=>"• "+c));
+  sec(5,"Objectif pour le prochain duo",D.next?[D.next]:[]);
+  sec(6,"Compétences observées",D.grid.map(g=>"• "+g.l+" : "+LEVELS[g.v]));
+  if(D.d) L.push("",D.d.name+", Directrice régionale");
+  return L.join("\n");
+}
+function copyText(t){
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>toast("Compte-rendu copié"),()=>fallbackCopy(t))}else fallbackCopy(t);
+}
+function fallbackCopy(t){const ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Compte-rendu copié")}catch(_){toast("Copie impossible")}ta.remove()}
+
+if(typeof document!=="undefined"&&document.getElementById("app")) render();
+if("serviceWorker" in navigator && location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+</script>
+</body>
+</html>
